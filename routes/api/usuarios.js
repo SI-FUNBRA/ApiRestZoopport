@@ -95,7 +95,7 @@ router.post('/', async (req, res) => {
        LugarExpedicionDoc:req.body.LugarExpedicionDoc,
        idBarrio_FK: req.body.idBarrio_FK
    }).catch(err=>{
-        res.json({mensage:"error al crear el usuario",detallesError:err});
+        res.json({err:"error al crear el usuario",detallesError:err.errors[0]});
    });
    const credencialc = Credenciales.create({
        username: req.body.username,
@@ -106,7 +106,7 @@ router.post('/', async (req, res) => {
        idUsuario: 3,
        idRol: req.body.idRol
    });
-    res.json({ usuario, success:'Usuario Creado Con Exito' });
+    res.status(201).json({ usuario, success:'Usuario Creado Con Exito' });
     }else{
          res.json({err:"Error en crear credencial"});
     }
