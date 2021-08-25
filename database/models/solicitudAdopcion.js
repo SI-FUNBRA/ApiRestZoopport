@@ -19,7 +19,7 @@ SolicituAdopcion.init({
         allowNull: false
     },
     fechaSolicitud:{
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
         validate:{
             isDate:{

@@ -15,7 +15,7 @@ SolicitudDonacionEspecieModel.init({
         allowNull:false
     },
     fechaEntrega:{
-        type:DataTypes.DATE,
+        type:DataTypes.DATEONLY,
         allowNull:false,
         validate:{
             isDate:{

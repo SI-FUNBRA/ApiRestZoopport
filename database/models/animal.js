@@ -17,7 +17,7 @@ Animal.init({
         allowNull: false
     },
     edad: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
         validate:{
             isDate:{
@@ -27,7 +27,7 @@ Animal.init({
         }
     },
     fechaLlegada: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
         validate:{
             isDate:{

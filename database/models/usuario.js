@@ -42,7 +42,7 @@ Usuarios.init({
     },
     
     fechaNacimientoUsuario: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull:false,
         validate:{
             isDate:{
@@ -62,7 +62,7 @@ Usuarios.init({
         allowNull: false
     },
     fechaExpedicionDoc:{
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull:false,
         validate:{
             isDate:{

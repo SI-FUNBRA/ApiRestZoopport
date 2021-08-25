@@ -13,7 +13,7 @@ DonacionEconomicaModel.init({
         autoIncrement:true
     },
     fechaDonacion:{
-        type:DataTypes.DATE,
+        type:DataTypes.DATEONLY,
         allowNull:false,
         validate:{
             isDate:{
