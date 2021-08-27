@@ -17,7 +17,8 @@ Pais.init({
                  is: ["^[a-z]+$",'i'],
                  msg:"El Pais solo debe contener letras"
             }
-        }
+        },
+        unique: true
     }
 }, {
     sequelize,

@@ -13,11 +13,12 @@ Rol.init({
         type: DataTypes.STRING(20),
         allowNull: false,
         validate:{
-            is: {
-                 is: ["^[a-z]+$",'i'],
+            isAlpha: {
                  msg:"El Rol solo debe contener letras"
             }
-        }
+            
+        },
+        unique: true
         
     } 
 }, {

@@ -34,8 +34,7 @@ router.get('/', async(req, res) => {
             model: UsuarioRol,
             attributes:['idRol']
         }
-        ],
-        attributes: ['idUsuario','nombreUsuario','apellidoUsuario','correoUsuario','telefonoFijo','telefonoCelular','fechaNacimientoUsuario','numeroDocumento','fechaExpedicionDoc']
+        ]
     });
     console.log(req.nombreUsu);
      res.json(usuarios);
@@ -66,8 +65,7 @@ router.get('/inactivos', async(req, res) => {
             model: UsuarioRol,
             attributes:['idRol']
         }
-        ],
-        attributes: ['idUsuario','nombreUsuario','apellidoUsuario','correoUsuario','telefonoFijo','telefonoCelular','fechaNacimientoUsuario','numeroDocumento','fechaExpedicionDoc']
+        ]
     });
      res.json(usuarios);
 });
@@ -77,7 +75,6 @@ router.get('/inactivos', async(req, res) => {
 router.post('/', async (req, res) => {
     
     const ussers = await Credenciales.findAll({where: {username:req.body.username }});
-    let password = req.body.pass;
 
     if(ussers == false){
     req.body.pass = bcrypt.hashSync(req.body.pass, 10);
@@ -95,27 +92,33 @@ router.post('/', async (req, res) => {
        LugarExpedicionDoc:req.body.LugarExpedicionDoc,
        idBarrio_FK: req.body.idBarrio_FK
    }).catch(err=>{
-        res.json({err:"error al crear el usuario",detallesError:err.errors[0]});
+        res.json({err:"Error al crear el usuario",detallesError:err.errors[0]});
    });
-   const credencialc = Credenciales.create({
+   await Credenciales.create({
        username: req.body.username,
        pass: req.body.pass,
        CredencialesUsuario_FK: usuario.idUsuario
    });
-   const usuarioRol = UsuarioRol.create({
-       idUsuario: 3,
-       idRol: req.body.idRol
+   await UsuarioRol.create({
+       idUsuario: usuario.idUsuario,
+       idRol: 3
    });
     res.status(201).json({ usuario, success:'Usuario Creado Con Exito' });
     }else{
-         res.json({err:"Error en crear credencial"});
+        let err={
+            errors:[{message:"Error Nombre De Usuario Ya Existe"}]
+        }
+         res.json({err:"Error en crear credencial",detallesError:err.errors[0]});
     }
 });
 
 // UPDATE
 router.put('/actualizar/:idUsuario', async(req, res) => {
     
-   
+   const ussers = await Credenciales.findAll({where: {username:req.body.username }});
+
+    if(ussers == false){
+    
     const usuario = await Usuarios.update({
        nombreUsuario: req.body.nombreUsuario,
        apellidoUsuario: req.body.apellidoUsuario,
@@ -130,14 +133,21 @@ router.put('/actualizar/:idUsuario', async(req, res) => {
        idBarrio_FK: req.body.idBarrio_FK
     },{
         where: { idUsuario: req.params.idUsuario }
-    });
+    }).catch(err=>{
+        res.json({err:"Error al actualizar el usuario",detallesError:err.errors[0]});
+   });;
     const credencialc = Credenciales.update({
         username: req.body.username
     }, {
         where: { CredencialesUsuario_FK: req.params.idUsuario }
     });
-     res.json({success:"Usuario Actualizado con exito"});
-    
+     res.status(201).json({success:"Usuario Actualizado con exito"});
+    }else{
+        let err={
+            errors:[{message:"Error Nombre De Usuario Ya Existe"}]
+        }
+         res.json({err:"Error en Actualizar credencial",detallesError:err.errors[0]});
+    }
 });
 
 // INHABILITAR
@@ -153,11 +163,11 @@ router.put('/inhabilitar/:idUsuario', async(req, res) => {
         where: { CredencialesUsuario_FK: req.params.idUsuario}
     });
 
-     res.json({success: 'El Usuario a sido inactivado'});
+     res.status(201).json({success: 'El Usuario a sido inhabilitado'});
 });
 
 // HABILITAR
-router.put('/habilitar/:idUsuario', async(req, res) => {
+router.put('/activar/:idUsuario', async(req, res) => {
     const usuario = await Usuarios.update({
         estadoUsuario : true
     }, {
@@ -169,7 +179,7 @@ router.put('/habilitar/:idUsuario', async(req, res) => {
         where: { CredencialesUsuario_FK: req.params.idUsuario}
     });
 
-     res.json({success: 'El Usuario a sido activado'});
+     res.status(201).json({success: 'El Usuario a sido activado'});
 });
 
 module.exports = router;

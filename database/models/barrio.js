@@ -1,4 +1,4 @@
-const { Model, DataTypes } = require('sequelize');
+const { Model, DataTypes, UniqueConstraintError } = require('sequelize');
 const sequelize = require('../db');
 
 const Localidad = require('./localidad');
@@ -19,7 +19,8 @@ Barrio.init({
                  is: ["^[a-z]+$",'i'],
                  msg:"El Barrio solo debe contener letras"
             }
-        }
+        },
+        unique: true
     }
 }, {
     sequelize,

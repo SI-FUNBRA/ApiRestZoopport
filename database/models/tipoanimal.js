@@ -17,7 +17,8 @@ TipoAnimal.init({
                  is: ["^[a-z]+$",'i'],
                  msg:"El Animal solo debe contener letras"
             }
-        }
+        },
+        unique: true
     }
 }, {
     sequelize,

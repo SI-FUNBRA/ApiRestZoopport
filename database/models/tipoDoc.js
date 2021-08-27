@@ -13,11 +13,11 @@ TipoDoc.init({
         type: DataTypes.STRING(20),
         allowNull: false,
         validate:{
-            is: {
-                 is: ["^[a-z]+$",'i'],
-                 msg:"El Pais solo debe contener letras"
+            isAlpha: {
+                 msg:"El tipo documento solo debe contener letras"
             }
-        }
+        },
+        unique: true
     }
 }, {
     sequelize,

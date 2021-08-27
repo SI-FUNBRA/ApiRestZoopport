@@ -19,7 +19,8 @@ Ciudad.init({
                  is: ["^[a-z]+$",'i'],
                  msg:"La ciudad solo debe contener letras"
             }
-        }
+        },
+        unique: true
     }
 }, {
     sequelize,

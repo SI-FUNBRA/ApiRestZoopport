@@ -20,7 +20,7 @@ Usuarios.init({
         validate:{
             is: {
                  is: ["^[a-z]+$",'i'],
-                 msg:"El Pais solo debe contener letras"
+                 msg:"El Nombre solo debe contener letras"
             }
         }
     },
@@ -30,7 +30,7 @@ Usuarios.init({
         validate:{
             is: {
                  is: ["^[a-z]+$",'i'],
-                 msg:"El Pais solo debe contener letras"
+                 msg:"El Nombre solo debe contener letras"
             }
         }
     },
@@ -41,12 +41,10 @@ Usuarios.init({
             isEmail: {
                 args: true,
                 msg: "El campo tiene que ser un correo valido"
-            },
-            unique: {
-                args:true,
-                msg: "Este numero de telefono ya fue registrado en nuestra base de datos"
             }
+            
         },
+        unique:true,
         allowNull: false
     },
     telefonoFijo: DataTypes.INTEGER,
@@ -86,10 +84,10 @@ Usuarios.init({
                 args: true,
                 msg:"El numero de documento solo puede recibir numeros"
             } ,
-            unique: {
-                args:true,
-                msg: "Este numero de telefono ya fue registrado en nuestra base de datos"
-            }
+        },
+        unique: {
+            args:true,
+            msg: "Este numero de documento ya fue registrado en nuestra base de datos"
         }
     },
     fechaExpedicionDoc:{

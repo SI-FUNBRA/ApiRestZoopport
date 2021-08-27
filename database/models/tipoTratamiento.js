@@ -11,7 +11,8 @@ TipoTratamiento.init({
     },
     nombreTipoTratamiento: {
         type: DataTypes.STRING(20),
-        allowNull: false
+        allowNull: false,
+        unique: true
     }
 }, {
     sequelize,
