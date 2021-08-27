@@ -13,14 +13,18 @@ Cita.init({
     },
     fechaCita: {
         type: DataTypes.STRING(20),
-        allowNull: false
+        allowNull: false,
+        validate:{
+            isDate:{
+                args:true,
+                msg:"La fecha de donacion tiene que contener el formato AAAA-MM-DD"
+            }
+        }
     },
     motivoCita: {
         type: DataTypes.STRING(20),
         allowNull: false
-    }
-
-    
+    }   
 }, {
     sequelize,
     modelName: "Cita",

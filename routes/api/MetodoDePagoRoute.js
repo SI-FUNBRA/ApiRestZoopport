@@ -13,8 +13,12 @@ router.get('/',async (req,res)=>{
 router.post('/',async(req,res)=>{
     const metododepagoCREATE = await MetodoDePagoModel.create({
         nombreMetodoPago:req.body.nombreMetodoPago
+    }).catch(err=>{
+        res.json({err:"error al crear un metodo de pago",detallesError:err.errors[0]});
     });
     res.json(metododepagoCREATE);
+
+    res.status(201).json({success: "Metodo de pago Creado Con Exito"});
 });
 
 //READ -> /api/MetodoDePago/:idMetodoPago

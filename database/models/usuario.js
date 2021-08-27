@@ -16,11 +16,23 @@ Usuarios.init({
     },
     nombreUsuario: {
         type: DataTypes.STRING(25),
-        allowNull: false
+        allowNull: false,
+        validate:{
+            is: {
+                 is: ["^[a-z]+$",'i'],
+                 msg:"El Pais solo debe contener letras"
+            }
+        }
     },
     apellidoUsuario: {
         type: DataTypes.STRING(25),
-        allowNull: false
+        allowNull: false,
+        validate:{
+            is: {
+                 is: ["^[a-z]+$",'i'],
+                 msg:"El Pais solo debe contener letras"
+            }
+        }
     },
     
     correoUsuario: {
@@ -29,16 +41,25 @@ Usuarios.init({
             isEmail: {
                 args: true,
                 msg: "El campo tiene que ser un correo valido"
+            },
+            unique: {
+                args:true,
+                msg: "Este numero de telefono ya fue registrado en nuestra base de datos"
             }
         },
-        unique: true,
         allowNull: false
     },
     telefonoFijo: DataTypes.INTEGER,
 
     telefonoCelular:{
         type: DataTypes.STRING(20),
-        allowNull:false
+        allowNull:false,
+        validate:{
+            is:{
+                is: /^(\(?\+[\d]{1,3}\)?)\s?([\d]{1,5})\s?([\d][\s\.-]?){6,7}$/,
+                msg: "El numero ingresado debe ser como, ejemplo: +57 3001233210"
+            }
+        }
     },
     
     fechaNacimientoUsuario: {
@@ -59,7 +80,17 @@ Usuarios.init({
     
     numeroDocumento: {
         type: DataTypes.STRING(20),
-        allowNull: false
+        allowNull: false,
+        validate:{
+            isNumeric:{
+                args: true,
+                msg:"El numero de documento solo puede recibir numeros"
+            } ,
+            unique: {
+                args:true,
+                msg: "Este numero de telefono ya fue registrado en nuestra base de datos"
+            }
+        }
     },
     fechaExpedicionDoc:{
         type: DataTypes.DATEONLY,
@@ -81,7 +112,6 @@ Usuarios.init({
         type: DataTypes.BOOLEAN,
         defaultValue: true
     }
-    
 }, {
     sequelize,
     modelName: "Usuario",

@@ -14,9 +14,11 @@ router.post('/', async (req, res) => {
      
    const respuesta = await Respuesta.create(  {
        descripcionRespuesta: req.body.descripcionRespuesta,     
-   });
+   }).catch(err=>{
+        res.json({err:"error al crear una respuesta",detallesError:err.errors[0]});
+    });
    
-    res.json({succes: "Creado Con Exito"});
+    res.status(201).json({success: "Respuesta Creada Con Exito"});
 });
 
 // UPDATE
@@ -28,13 +30,13 @@ router.put('/actualizar/:idRespuesta', async(req, res) => {
         where: { idRespuesta: req.params.idRespuesta }
     });
     
-     res.json({success:"Actualizado con exito"});
+     res.json({success:"Respuesta Actualizada con exito"});
 });
 
 router.delete('/:ididRespuesta', async(req, res) => {
     await Respuesta.destroy({
         where: { idRespuesta: req.params.idRespuesta}
     });
-     res.json({succes: 'Eliminado con exito'});
+     res.json({succes: 'Respuesta Eliminada con exito'});
 });
 module.exports = router;

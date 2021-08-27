@@ -14,9 +14,11 @@ router.post('/', async (req, res) => {
      
    const rol = await Rol.create(  {
        nombreRol: req.body.nombreRol,     
-   });
+   }).catch(err=>{
+        res.json({err:"error al crear el Rol",detallesError:err.errors[0]});
+    });
    
-    res.json({succes: "Creado Con Exito"});
+    res.status(201).json({success: "Rol Creado Con Exito"});
 });
 
 // UPDATE
@@ -28,13 +30,13 @@ router.put('/actualizar/:idRol', async(req, res) => {
         where: { idRol: req.params.idRol }
     });
     
-     res.json({success:"Actualizado con exito"});
+     res.json({success:"Rol Actualizado con exito"});
 });
 
 router.delete('/:ididRol', async(req, res) => {
     await Rol.destroy({
         where: { idRol: req.params.idRol}
     });
-     res.json({succes: 'Eliminado con exito'});
+     res.json({succes: 'Rol Eliminado con exito'});
 });
 module.exports = router;

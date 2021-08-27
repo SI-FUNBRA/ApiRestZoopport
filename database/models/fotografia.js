@@ -19,8 +19,6 @@ Fotografia.init({
         type: DataTypes.STRING(100),
         allowNull: false
     }
-
-    
 }, {
     sequelize,
     modelName: "Fotografia",

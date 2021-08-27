@@ -16,9 +16,11 @@ router.post('/', async (req, res) => {
      
    const TipoDoc = await TipoDocumento.create(  {
        nombreTipoDoc: req.body.nombreTipoDoc,     
-   });
+   }).catch(err=>{
+        res.json({err:"error al crear el Tipo de Documento",detallesError:err.errors[0]});
+    });
    
-    res.json({succes: "Creado Con Exito"});
+    res.status(201).json({success: "Tipo Documento Creado Con Exito"});
 });
 
 // UPDATE
@@ -30,13 +32,13 @@ router.put('/actualizar/:idTiUsuario', async(req, res) => {
         where: { idTipoDoc: req.params.idTipoDoc }
     });
     
-     res.json({success:"Actualizado con exito"});
+     res.json({success:"Tipo Documento Actualizado con exito"});
 });
 
 router.delete('/:idTipoDoc', async(req, res) => {
     await TipoDocumento.destroy({
         where: { idTipoDoc: req.params.idTipoDoc}
     });
-     res.json({succes: 'Eliminado con exito'});
+     res.json({succes: 'Tipo Documento Eliminado con exito'});
 });
 module.exports = router;

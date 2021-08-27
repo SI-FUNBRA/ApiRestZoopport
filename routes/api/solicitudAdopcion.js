@@ -15,9 +15,11 @@ router.post('/', async (req, res) => {
    const solicitudAdopcion = await SolicituAdopcion.create(  {
        estadoSolicituAdopcion: req.body.estadoSolicituAdopcion, 
        fechaSolicitud: req.body.fechaSolicitud    
-   });
+   }).catch(err=>{
+        res.json({err:"error al crear una solicitud adopción",detallesError:err.errors[0]});
+    });
    
-    res.json({succes: "Creado Con Exito"});
+    res.status(201).json({success: "Solicitud Adopcion Creada Con Exito"});
 });
 
 // UPDATE
@@ -30,13 +32,13 @@ router.put('/actualizar/:idSolicituAdopcion', async(req, res) => {
         where: { idSolicituAdopcion: req.params.idSolicituAdopcion }
     });
     
-     res.json({success:"Actualizado con exito"});
+     res.json({success:"olicitud Adopcion Actualizada con exito"});
 });
 
 router.delete('/:ididSolicituAdopcion', async(req, res) => {
     await SolicituAdopcion.destroy({
         where: { idSolicituAdopcion: req.params.idSolicituAdopcion}
     });
-     res.json({succes: 'Eliminado con exito'});
+     res.json({succes: 'olicitud Adopcion Eliminada con exito'});
 });
 module.exports = router;

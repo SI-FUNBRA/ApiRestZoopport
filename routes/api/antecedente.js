@@ -24,9 +24,11 @@ router.post('/', async (req, res) => {
        nombreAntecedente: req.body.nombreAntecedente,
        detalleAntecedente: req.body.detalleAntecedente, 
        idTipoAntecedente_FK: req.body.idTipoAntecedente_FK    
-   });
+   }).catch(err=>{
+        res.json({err:"error al crear un Antecedente",detallesError:err.errors[0]});
+    });
    
-    res.json({succes: "Creado Con Exito"});
+    res.status(201).json({success: "Antecedente Creado Con Exito"});
 });
 
 // UPDATE
@@ -39,7 +41,7 @@ router.put('/actualizar/:idAntecedente', async(req, res) => {
         where: { idAntecedente: req.params.idAntecedente }
     });
     
-     res.json({success:"Actualizado con exito"});
+     res.json({success:"Antecedente Actualizado con exito"});
 });
 
 

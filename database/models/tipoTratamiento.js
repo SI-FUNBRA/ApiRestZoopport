@@ -13,8 +13,6 @@ TipoTratamiento.init({
         type: DataTypes.STRING(20),
         allowNull: false
     }
-
-    
 }, {
     sequelize,
     modelName: "TipoTratamiento",

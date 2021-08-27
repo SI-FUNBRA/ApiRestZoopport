@@ -24,9 +24,11 @@ router.post('/', async (req, res) => {
         fechaCita: req.body.fechaCita,
         motivoCita: req.body.motivoCita,
         idSede_FK: req.body.idSede_FK  
-   });
+   }).catch(err=>{
+        res.json({err:"error al crear una Cita",detallesError:err.errors[0]});
+    });
    
-    res.json({succes: "Creado Con Exito"});
+    res.status(201).json({success: "Cita Creada Con Exito"});
 });
 
 // UPDATE
@@ -39,13 +41,13 @@ router.put('/actualizar/:idcita', async(req, res) => {
         where: { idCita: req.params.idcita }
     });
     
-     res.json({success:"Actualizado con exito"});
+     res.json({success:"Cita Actualizada con exito"});
 });
 
 router.delete('/:idcita', async(req, res) => {
     await Cita.destroy({
         where: { idCita: req.params.idCita}
     });
-     res.json({succes: 'Eliminado con exito'});
+     res.json({succes: 'Cita Eliminada con exito'});
 });
 module.exports = router;

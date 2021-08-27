@@ -18,8 +18,12 @@ router.post('/',async(req,res)=>{
         idDonacionEspecie_FK:req.body.idDonacionEspecie_FK,
         idTipoArticuloDonado_FK:req.body.idTipoArticuloDonado_FK
 
+    }).catch(err=>{
+        res.json({err:"error al crear un articulo donado",detallesError:err.errors[0]});
     });
     res.json(articulodonadoCREATE);
+
+    res.status(201).json({success: "Articulo Donado Creado Con Exito"});
 });
 
 //READ 

@@ -14,9 +14,11 @@ router.post('/', async (req, res) => {
      
    const tipoAnimal = await TipoAnimal.create(  {
        nombreTipoAnimal: req.body.nombreTipoAnimal,     
-   });
+   }).catch(err=>{
+        res.json({err:"error al crear un tipo animal",detallesError:err.errors[0]});
+    });
    
-    res.json({succes: "Creado Con Exito"});
+    res.status(201).json({success: "Tipo Animal Creado Con Exito"});
 });
 
 // UPDATE
@@ -28,13 +30,13 @@ router.put('/actualizar/:idTipoAnimal', async(req, res) => {
         where: { idTipoAnimal: req.params.idTipoAnimal }
     });
     
-     res.json({success:"Actualizado con exito"});
+     res.json({success:"Tipo Animal Actualizado con exito"});
 });
 
 router.delete('/:ididTipoAnimal', async(req, res) => {
     await TipoAnimal.destroy({
         where: { idTipoAnimal: req.params.idTipoAnimal}
     });
-     res.json({succes: 'Eliminado con exito'});
+     res.json({succes: 'Tipo Animal Eliminado con exito'});
 });
 module.exports = router;

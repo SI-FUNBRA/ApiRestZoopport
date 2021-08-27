@@ -12,7 +12,13 @@ SolicitudDonacionEspecieModel.init({
     },
     estadoSolicitud:{
         type:DataTypes.STRING(10),
-        allowNull:false
+        allowNull:false,
+        validate:{
+            isIn: {
+                args:[["Activo", "Inactivo", "Suspendido"]],
+                msg: "El estado animal no coincide con ninguno registrado en la base de datos"
+            },
+        }
     },
     fechaEntrega:{
         type:DataTypes.DATEONLY,

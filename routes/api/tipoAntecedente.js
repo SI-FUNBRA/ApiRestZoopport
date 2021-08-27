@@ -14,9 +14,11 @@ router.post('/', async (req, res) => {
      
    const tipoAntecedente = await TipoAntecedente.create(  {
        nombreTipoAntecedente: req.body.nombreTipoAntecedente,     
-   });
+   }).catch(err=>{
+        res.json({err:"error al crear un tipo antecedente",detallesError:err.errors[0]});
+    });
    
-    res.json({succes: "Creado Con Exito"});
+    res.status(201).json({success: "Tipo Antecedente Creado Con Exito"});
 });
 
 // UPDATE
@@ -28,13 +30,13 @@ router.put('/actualizar/:idTipoAntecedente', async(req, res) => {
         where: { idTipoAntecedente: req.params.idTipoAntecedente }
     });
     
-     res.json({success:"Actualizado con exito"});
+     res.json({success:"Tipo Antecedente Actualizado con exito"});
 });
 
 router.delete('/:ididTipoAntecedente', async(req, res) => {
     await TipoAntecedente.destroy({
         where: { idTipoAntecedente: req.params.idTipoAntecedente}
     });
-     res.json({succes: 'Eliminado con exito'});
+     res.json({succes: 'Tipo Antecedente Eliminado con exito'});
 });
 module.exports = router;

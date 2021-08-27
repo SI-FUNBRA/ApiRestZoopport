@@ -15,8 +15,12 @@ router.post('/',async(req,res)=>{
         estadoSolicitud:req.body.estadoSolicitud,
         fechaEntrega:req.body.fechaEntrega,
         lugarEntrega:req.body.lugarEntrega
+    }).catch(err=>{
+        res.json({err:"error al crear el estado de una solicitud donación",detallesError:err.errors[0]});
     });
     res.json(solicituddonacionespecieaCREATE);
+
+    res.status(201).json({success: "Solicitud Donacion Especie Creada Con Exito"});
 });
 
 //READ 

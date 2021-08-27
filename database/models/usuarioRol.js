@@ -22,8 +22,6 @@ UsuarioRol.init({
         type: DataTypes.BOOLEAN,
         defaultValue: true
     }
-    
-    
 }, {
     sequelize,
     modelName: "UsuarioRol",

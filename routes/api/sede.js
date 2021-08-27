@@ -24,12 +24,12 @@ router.post('/', async (req, res) => {
        telefonoSede: req.body.telefonoSede, 
        correoSede: req.body.correoSede, 
        Nomenclatura: req.body.Nomenclatura, 
-       idBarrio_FK: req.body.idBarrio_FK    
-   }).catch(err=>{ 
-        res.json({err, mensage:"error al crear la nueva sede"});
+       idBarrio_FK: req.body.idBarrio_FK,    
+   }).catch(err=>{
+        res.json({err:"error al crear una nueva sede",detallesError:err.errors[0]});
    });
    
-    res.json({succes: "Creado Con Exito"});
+    res.status(201).json({success: "Sede Creada Con Exito"});
 });
 
 // UPDATE
@@ -43,13 +43,13 @@ router.put('/actualizar/:idSede', async(req, res) => {
         where: { idSede: req.params.idSede }
     });
     
-     res.json({success:"Actualizado con exito"});
+     res.json({success:"Sede Actualizada con exito"});
 });
 
 router.delete('/:idSede', async(req, res) => {
     await Sede.destroy({
         where: { idSede: req.params.idSede}
     });
-     res.json({succes: 'Eliminado con exito'});
+     res.json({success: 'Sede Eliminada con exito'});
 });
 module.exports = router;

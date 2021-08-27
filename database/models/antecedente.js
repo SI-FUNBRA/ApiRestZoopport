@@ -23,8 +23,6 @@ Antecedente.init({
         type: DataTypes.BOOLEAN,
         defaultValue: true
     }
-
-    
 }, {
     sequelize,
     modelName: "Antecedente",

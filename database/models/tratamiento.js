@@ -23,8 +23,6 @@ Tratamiento.init({
         type: DataTypes.BOOLEAN,
         defaultValue: true
     }
-
-    
 }, {
     sequelize,
     modelName: "Tratamiento",

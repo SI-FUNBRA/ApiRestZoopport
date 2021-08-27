@@ -24,9 +24,11 @@ router.post('/', async (req, res) => {
        nombreTratamiento: req.body.nombreTratamiento,
        detalleTratamiento: req.body.detalleTratamiento, 
        idTipoTratamiento_FK: req.body.idTipoTratamiento_FK    
-   });
+   }).catch(err=>{
+        res.json({err:"error al crear un tratamiento",detallesError:err.errors[0]});
+    });
    
-    res.json({succes: "Creado Con Exito"});
+    res.status(201).json({success: "Tratamiento Creado Con Exito"});
 });
 
 // UPDATE
@@ -39,7 +41,7 @@ router.put('/actualizar/:idTratamiento', async(req, res) => {
         where: { idTratamiento: req.params.idTratamiento }
     });
     
-     res.json({success:"Actualizado con exito"});
+     res.json({success:"Tratamiento Actualizado con exito"});
 });
 
 

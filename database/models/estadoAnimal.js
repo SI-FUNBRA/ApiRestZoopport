@@ -11,10 +11,18 @@ EstadoAnimal.init({
     },
     nombreEstadoAnimal: {
         type: DataTypes.STRING(20),
-        allowNull: false
+        allowNull: false,
+        validate:{
+            isIn: {
+                args:[["Activo", "Inactivo", "Suspendido"]],
+                msg: "El estado animal no coincide con ninguno registrado en la base de datos"
+            },
+            unique: {
+                args:true,
+                msg: "Este estado ya fue registrado en nuestra base de datos"
+            }
+        }
     }
-
-    
 }, {
     sequelize,
     modelName: "EstadoAnimal",

@@ -23,9 +23,11 @@ router.post('/', async (req, res) => {
    const localidad = await Localidad.create(  {
        nombreLocalidad: req.body.nombreLocalidad, 
        idCiudad_FK: req.body.idCiudad_FK    
-   });
+   }).catch(err=>{
+        res.json({err:"error al crear una localidad",detallesError:err.errors[0]});
+    });
    
-    res.json({succes: "Creado Con Exito"});
+    res.status(201).json({success: "Localidad Creada Con Exito"});
 });
 
 // UPDATE
@@ -37,13 +39,13 @@ router.put('/actualizar/:idLocalidad', async(req, res) => {
         where: { idLocalidad: req.params.idLocalidad }
     });
     
-     res.json({success:"Actualizado con exito"});
+     res.json({success:"Localidad Actualizada con exito"});
 });
 
 router.delete('/:idLocalidad', async(req, res) => {
     await Ciudad.destroy({
         where: { idLocalidad: req.params.idLocalidad}
     });
-     res.json({succes: 'Eliminado con exito'});
+     res.json({succes: 'Localidad Eliminada con exito'});
 });
 module.exports = router;

@@ -11,10 +11,14 @@ Pais.init({
     },
     nombrePais: {
         type: DataTypes.STRING(20),
-        allowNull: false
+        allowNull: false,
+        validate:{
+            is: {
+                 is: ["^[a-z]+$",'i'],
+                 msg:"El Pais solo debe contener letras"
+            }
+        }
     }
-
-    
 }, {
     sequelize,
     modelName: "Pais",

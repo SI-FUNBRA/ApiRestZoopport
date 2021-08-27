@@ -11,7 +11,12 @@ Credenciales.init({
     username: {
         type: DataTypes.STRING(20),
         allowNull: false,
-        unique: true
+        validate:{
+            unique: {
+                args:true,
+                msg: "Este numero de telefono ya fue registrado en nuestra base de datos"
+            }
+        }
     },
     pass: {
         type: DataTypes.STRING(250),

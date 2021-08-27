@@ -8,15 +8,16 @@ router.get('/', async (req, res) => {
      res.json(pais);
 });
 
-
 // CREATE 
 router.post('/', async (req, res) => {
      
    const pais = await Pais.create(  {
        nombrePais: req.body.nombrePais,     
-   });
+   }).catch(err=>{
+        res.json({err:"error al crear el Pais",detallesError:err.errors[0]});
+    });
    
-    res.json({succes: "Creado Con Exito"});
+    res.status(201).json({success: "Pais Creado Con Exito"});
 });
 
 // UPDATE

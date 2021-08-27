@@ -24,9 +24,11 @@ router.post('/', async (req, res) => {
        Foto: req.body.Foto, 
        descripcionFoto: req.body.descripcionFoto, 
        idAnimal_FK: req.body.idAnimal_FK    
-   });
+   }).catch(err=>{
+        res.json({err:"error al ingresar una fotografia del animal",detallesError:err.errors[0]});
+    });
    
-    res.json({succes: "Creado Con Exito"});
+    res.status(201).json({success: "Fotografia Creada Con Exito"});
 });
 
 // UPDATE
@@ -39,13 +41,13 @@ router.put('/actualizar/:idFoto', async(req, res) => {
         where: { idFotografia: req.params.idFoto }
     });
     
-     res.json({success:"Actualizado con exito"});
+     res.json({success:"Fotografia Actualizada con exito"});
 });
 
 router.delete('/:idFoto', async(req, res) => {
     await Fotografia.destroy({
         where: { idFotografia: req.params.idFotografia}
     });
-     res.json({succes: 'Eliminado con exito'});
+     res.json({succes: 'Fotografia Eliminada con exito'});
 });
 module.exports = router;

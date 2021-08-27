@@ -13,18 +13,36 @@ Sede.init({
     },
     telefonoSede: {
         type: DataTypes.STRING(20),
-        allowNull: false
+        allowNull: false,
+        validate:{
+            is:{
+                is: /^(\(?\+[\d]{1,3}\)?)\s?([\d]{1,5})\s?([\d][\s\.-]?){6,7}$/,
+                msg: "El numero ingresado debe ser como, ejemplo: +57 3001233210"
+            },
+            unique: {
+                args:true,
+                msg: "Este numero de telefono ya fue registrado en nuestra base de datos"
+            }
+        }
     },
     correoSede: {
         type: DataTypes.STRING(50),
-        allowNull: false
+        allowNull: false,
+        validate: {
+            isEmail: {
+                args: true,
+                msg: "El campo tiene que ser un correo valido"
+            },
+            unique: {
+                args:true,
+                msg: "Este numero de telefono ya fue registrado en nuestra base de datos"
+            }
+        },
     },
     Nomenclatura: {
         type: DataTypes.STRING(50),
         allowNull: false
     },
-
-    
 }, {
     sequelize,
     modelName: "Sede",

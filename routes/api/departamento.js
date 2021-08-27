@@ -23,9 +23,11 @@ router.post('/', async (req, res) => {
    const departamento = await Departamento.create(  {
        nombreDepartamento: req.body.nombreDepartamento, 
        idPais_FK: req.body.idPais_FK    
-   });
+   }).catch(err=>{
+        res.json({err:"error al crear el Departamento",detallesError:err.errors[0]});
+    });
    
-    res.json({succes: "Creado Con Exito"});
+    res.status(201).json({success: "Departamento Creado Con Exito"});
 });
 
 // UPDATE
@@ -37,13 +39,13 @@ router.put('/actualizar/:idDep', async(req, res) => {
         where: { idDepartamento: req.params.idDep }
     });
     
-     res.json({success:"Actualizado con exito"});
+     res.json({success:"Departamento Actualizado con exito"});
 });
 
 router.delete('/:idDep', async(req, res) => {
     await Departamento.destroy({
         where: { idDepartamento: req.params.idDepartamento}
     });
-     res.json({succes: 'Eliminado con exito'});
+     res.json({succes: 'Departamento Eliminado con exito'});
 });
 module.exports = router;

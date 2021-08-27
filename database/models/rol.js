@@ -11,10 +11,15 @@ Rol.init({
     },
     nombreRol: {
         type: DataTypes.STRING(20),
-        allowNull: false
-    }
-
-    
+        allowNull: false,
+        validate:{
+            is: {
+                 is: ["^[a-z]+$",'i'],
+                 msg:"El Rol solo debe contener letras"
+            }
+        }
+        
+    } 
 }, {
     sequelize,
     modelName: "Rol",

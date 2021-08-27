@@ -27,15 +27,17 @@ router.get('/', async(req, res) => {
 router.post('/', async (req, res) => {
    req.body.pass = bcrypt.hashSync(req.body.pass, 10);
    
-   const animal = await Animal.create(  {
+   const animal = await Animal.create({
        nombreAnimal: req.body.nombreAnimal,
        edad: req.body.edad,
        fechaLlegada: req.body.fechaLlegada,
        historialTratamiento: req.body.historialTratamiento,
        idEstadoAnimal_FK: req.body.idEstadoAnimal_FK,
        idEspecie_FK: req.body.idEspecie_FK
+   }).catch(err=>{
+       res.json({err:"error al crear el Animal",detallesError:err.errors[0]});
    });
-    res.json({ animal, success:'Animal Creado Con Exito' });
+   res.status(201).json({success: "Animal Creado Con Exito"});
 });
 
 // UPDATE

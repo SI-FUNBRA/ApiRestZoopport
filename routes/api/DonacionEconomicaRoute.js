@@ -27,8 +27,12 @@ router.post('/',async(req,res)=>{
         montoDonacion:req.body.montoDonacion,
         idMetodoDePago_FK:req.body.idMetodoDePago_FK,
         idUsuario_FK:req.body.idUsuario_FK
+    }).catch(err=>{
+        res.json({err:"error al Registrar una donacion economica",detallesError:err.errors[0]});
     });
     res.json(donacioneconomicaCREATE);
+
+    res.status(201).json({success: "Donacion Economica Creada Con Exito"});
 });
 
 //READ -> /api/DonacionEconomica/:idDonacionEconomica

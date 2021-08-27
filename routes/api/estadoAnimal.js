@@ -14,9 +14,11 @@ router.post('/', async (req, res) => {
      
    const estadoAnimal = await EstadoAnimal.create(  {
        nombreEstadoAnimal: req.body.nombreEstadoAnimal,     
-   });
+   }).catch(err=>{
+        res.json({err:"error al crear un estado del animal",detallesError:err.errors[0]});
+    });
    
-    res.json({succes: "Creado Con Exito"});
+    res.status(201).json({success: "Estado Animal Creado Con Exito"});
 });
 
 // UPDATE
@@ -28,13 +30,13 @@ router.put('/actualizar/:idEstadoAnimal', async(req, res) => {
         where: { idEstadoAnimal: req.params.idEstadoAnimal }
     });
     
-     res.json({success:"Actualizado con exito"});
+     res.json({success:"Estado Animal Actualizado con exito"});
 });
 
 router.delete('/:ididEstadoAnimal', async(req, res) => {
     await EstadoAnimal.destroy({
         where: { idEstadoAnimal: req.params.idEstadoAnimal}
     });
-     res.json({succes: 'Eliminado con exito'});
+     res.json({succes: 'Estado Animal Eliminado con exito'});
 });
 module.exports = router;
