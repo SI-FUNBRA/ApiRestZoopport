@@ -15,14 +15,8 @@ SolicituAdopcion.init({
         autoIncrement: true 
     },
     estadoSolicituAdopcion: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.BOOLEAN,
         allowNull: false,
-        validate:{
-            isIn: {
-                args:[["Activo", "Inactivo", "Suspendido"]],
-                msg: "El estado animal no coincide con ninguno registrado en la base de datos"
-            },
-        }
     },
     fechaSolicitud:{
         type: DataTypes.DATEONLY,

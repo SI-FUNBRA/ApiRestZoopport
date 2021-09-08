@@ -12,7 +12,7 @@ Cita.init({
         autoIncrement: true 
     },
     fechaCita: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.DATEONLY,
         allowNull: false,
         validate:{
             isDate:{

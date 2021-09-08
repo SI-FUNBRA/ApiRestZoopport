@@ -14,13 +14,10 @@ Barrio.init({
     nombreBarrio: {
         type: DataTypes.STRING(20),
         allowNull: false,
-        validate:{
-            is: {
-                 is: ["^[a-z]+$",'i'],
-                 msg:"El Barrio solo debe contener letras"
-            }
-        },
-        unique: true
+        unique: {
+            args:true,
+            msg: "Este Barrio ya fue registrado en nuestra base de datos"
+        }
     }
 }, {
     sequelize,

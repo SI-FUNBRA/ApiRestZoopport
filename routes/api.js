@@ -6,6 +6,7 @@ const apiPreguntaRouter = require('./api/pregunta');
 const apiRespuestaRouter = require('./api/respuesta');
 const apiSolicitudAdopcionRouter = require('./api/solicitudAdopcion');
 const apiUsuariosRouter = require('./api/usuarios');
+const apiUsuarioRolRouter = require('./api/usuarioRol');
 const apiCredencialesRouter = require('./api/credenciales');
 const apiTipoDocRouter = require('./api/tipoDoc');
 const apiPaisRouter = require('./api/pais');
@@ -31,19 +32,27 @@ const apiSedeRouter=require('./api/sede');
 const apiCitaRouter=require('./api/cita');
 
 
-const middleware = require('./middelwares');
+const middleware = require('./middelwares/middelwares');
+const verifyUser = require('./middelwares/verifyUser');
 
-router.use('/tipoArticuloDonado',/* middleware.checkToken, */ apiTipoArticuloDonado);
-router.use('/articuloDonado',/* middleware.checkToken, */ apiArticuloDonado);
-router.use('/solicitudDonacionEspecie',/* middleware.checkToken, */ apiSolicitudDonacionEspecie);
+//modulo Usuario
 router.use('/rol', /* middleware.checkToken, */ apiRolRouter);
-router.use('/usuarios', /* middleware.checkToken, */ apiUsuariosRouter);
+router.use('/usuarios',  /* middleware.checkToken, verifyUser.checkUser, */  apiUsuariosRouter);
+router.use('/usuarioRol',  /* middleware.checkToken, verifyUser.checkUser, */  apiUsuarioRolRouter);
+
 router.use('/tipodoc', /* middleware.checkToken, */ apiTipoDocRouter);
+
 router.use('/pais', /* middleware.checkToken, */ apiPaisRouter);
 router.use('/departamento', /* middleware.checkToken, */ apiDepartamentoRouter);
 router.use('/ciudad', /* middleware.checkToken, */ apiCiudadRouter);
 router.use('/localidad', /* middleware.checkToken, */ apiLocalidadRouter);
 router.use('/barrio', /* middleware.checkToken, */ apiBarrioRouter);
+
+
+
+router.use('/tipoArticuloDonado',/* middleware.checkToken, */ apiTipoArticuloDonado);
+router.use('/articuloDonado',/* middleware.checkToken, */ apiArticuloDonado);
+router.use('/solicitudDonacionEspecie',/* middleware.checkToken, */ apiSolicitudDonacionEspecie);
 router.use('/metodoDePago',/* middleware.checkToken, */ apiMetodoDePagoRouter);
 router.use('/donacionEconomica',/* middleware.checkToken, */ apiDonacionEconomica);
 router.use('/pregunta',/* middleware.checkToken, */ apiPreguntaRouter);
@@ -61,7 +70,7 @@ router.use('/animal',/* middleware.checkToken, */ apiAnimalRouter);
 router.use('/sede',/* middleware.checkToken, */ apiSedeRouter);
 router.use('/cita',/* middleware.checkToken, */ apiCitaRouter);
 
-
+//credenciales
 router.use('/credenciales', apiCredencialesRouter);
 
 

@@ -15,12 +15,7 @@ Animal.init({
     nombreAnimal: {
         type: DataTypes.STRING(20),
         allowNull: false,
-        validate:{
-            is: {
-                 is: ["^[a-z]+$",'i'],
-                 msg:"El Animal solo debe contener letras"
-            }
-        }
+        
     },
     edad: {
         type: DataTypes.DATEONLY,

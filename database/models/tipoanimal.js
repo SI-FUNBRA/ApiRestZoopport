@@ -12,13 +12,10 @@ TipoAnimal.init({
     nombreTipoAnimal: {
         type: DataTypes.STRING(20),
         allowNull: false,
-        validate:{
-            is: {
-                 is: ["^[a-z]+$",'i'],
-                 msg:"El Animal solo debe contener letras"
-            }
-        },
-        unique: true
+        unique: {
+            args:true,
+            msg: "Este TipoAnimal ya fue registrado en nuestra base de datos"
+        }
     }
 }, {
     sequelize,

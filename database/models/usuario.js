@@ -17,22 +17,12 @@ Usuarios.init({
     nombreUsuario: {
         type: DataTypes.STRING(25),
         allowNull: false,
-        validate:{
-            is: {
-                 is: ["^[a-z]+$",'i'],
-                 msg:"El Nombre solo debe contener letras"
-            }
-        }
+        
     },
     apellidoUsuario: {
         type: DataTypes.STRING(25),
         allowNull: false,
-        validate:{
-            is: {
-                 is: ["^[a-z]+$",'i'],
-                 msg:"El Nombre solo debe contener letras"
-            }
-        }
+        
     },
     
     correoUsuario: {
@@ -44,7 +34,10 @@ Usuarios.init({
             }
             
         },
-        unique:true,
+        unique: {
+            args:true,
+            msg: "Esta direccion de Correo ya fue registrado en nuestra base de datos"
+        },
         allowNull: false
     },
     telefonoFijo: DataTypes.INTEGER,
@@ -52,12 +45,7 @@ Usuarios.init({
     telefonoCelular:{
         type: DataTypes.STRING(20),
         allowNull:false,
-        validate:{
-            is:{
-                is: /^(\(?\+[\d]{1,3}\)?)\s?([\d]{1,5})\s?([\d][\s\.-]?){6,7}$/,
-                msg: "El numero ingresado debe ser como, ejemplo: +57 3001233210"
-            }
-        }
+        
     },
     
     fechaNacimientoUsuario: {
@@ -83,7 +71,11 @@ Usuarios.init({
             isNumeric:{
                 args: true,
                 msg:"El numero de documento solo puede recibir numeros"
-            } ,
+            },
+            len:{
+                args:[7,20],
+                msg: "Minimo requerido de caracteres es 7 y maximo 20(Num Doc)"
+            }
         },
         unique: {
             args:true,

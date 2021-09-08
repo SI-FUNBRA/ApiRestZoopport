@@ -13,7 +13,7 @@ Credenciales.init({
         allowNull: false,
         unique: {
             args:true,
-            msg: "Este numero de telefono ya fue registrado en nuestra base de datos"
+            msg: "Este Usuario ya fue registrado en nuestra base de datos"
         }
         
     },

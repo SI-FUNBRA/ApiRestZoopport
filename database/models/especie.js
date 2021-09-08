@@ -14,12 +14,7 @@ Especie.init({
     nombreEspecie: {
         type: DataTypes.STRING(20),
         allowNull: false,
-        validate:{
-            is: {
-                 is: ["^[a-z]+$",'i'],
-                 msg:"La especie solo debe contener letras"
-            }
-        }
+        
     } 
 }, {
     sequelize,

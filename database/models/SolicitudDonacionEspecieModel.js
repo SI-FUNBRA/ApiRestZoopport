@@ -1,6 +1,7 @@
 const {Model,DataTypes}=require('sequelize');
 const sequelize=require('../db');
 const ArticuloDonadoModel = require('./ArticuloDonadoModel');
+const Usuario = require('./usuario');
 
 class SolicitudDonacionEspecieModel extends Model {}
 
@@ -11,14 +12,9 @@ SolicitudDonacionEspecieModel.init({
         autoIncrement:true
     },
     estadoSolicitud:{
-        type:DataTypes.STRING(10),
+        type:DataTypes.BOOLEAN,
         allowNull:false,
-        validate:{
-            isIn: {
-                args:[["Activo", "Inactivo", "Suspendido"]],
-                msg: "El estado animal no coincide con ninguno registrado en la base de datos"
-            },
-        }
+        defaultValue:true
     },
     fechaEntrega:{
         type:DataTypes.DATEONLY,
@@ -46,5 +42,14 @@ SolicitudDonacionEspecieModel.init({
 SolicitudDonacionEspecieModel.hasMany(ArticuloDonadoModel,{foreignKey:'idDonacionEspecie_FK'});
 //Relacion SolicitudDonacionEspecie 1:M ArticuloDonado
 ArticuloDonadoModel.belongsTo(SolicitudDonacionEspecieModel,{foreignKey:'idDonacionEspecie_FK'});
+
+
+//Relacion Usuario M:1 SolicitudDonacionEspecie
+Usuario.hasMany(SolicitudDonacionEspecieModel,{foreignKey:'idUsuario_FK'});
+//Relacion SolicitudDonacionEspecie 1:M Usuario
+SolicitudDonacionEspecieModel.belongsTo(Usuario,{foreignKey:'idUsuario_FK'});
+
+
+
 
 module.exports=SolicitudDonacionEspecieModel;

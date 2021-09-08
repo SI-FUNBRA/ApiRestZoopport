@@ -14,13 +14,10 @@ Departamento.init({
     nombreDepartamento: {
         type: DataTypes.STRING(20),
         allowNull: false,
-        validate:{
-            is: {
-                 is: ["^[a-z]+$",'i'],
-                 msg:"El Departamento solo debe contener letras"
-            }
-        },
-        unique: true
+        unique: {
+            args:true,
+            msg: "Este Departamento ya fue registrado en nuestra base de datos"
+        }
     }
 }, {
     sequelize,

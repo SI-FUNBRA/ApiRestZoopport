@@ -12,7 +12,6 @@ router.get('/', async (req,res)=>{
 //CREATE
 router.post('/',async(req,res)=>{
     const articulodonadoCREATE=await ArticuloDonadoModel.create({
-        idArticuloDonado:req.body.idArticuloDonado,
         nombreArticuloDonado:req.body.nombreArticuloDonado,
         cantidadArticuloDonado:req.body.cantidadArticuloDonado,
         idDonacionEspecie_FK:req.body.idDonacionEspecie_FK,

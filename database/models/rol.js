@@ -18,7 +18,10 @@ Rol.init({
             }
             
         },
-        unique: true
+        unique: {
+            args:true,
+            msg: "Este Rol ya fue registrado en nuestra base de datos"
+        }
         
     } 
 }, {

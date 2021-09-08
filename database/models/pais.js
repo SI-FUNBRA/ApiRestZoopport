@@ -12,13 +12,10 @@ Pais.init({
     nombrePais: {
         type: DataTypes.STRING(20),
         allowNull: false,
-        validate:{
-            is: {
-                 is: ["^[a-z]+$",'i'],
-                 msg:"El Pais solo debe contener letras"
-            }
-        },
-        unique: true
+        unique: {
+            args:true,
+            msg: "Este Pais ya fue registrado en nuestra base de datos"
+        }
     }
 }, {
     sequelize,

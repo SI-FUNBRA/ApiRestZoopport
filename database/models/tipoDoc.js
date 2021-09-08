@@ -17,7 +17,10 @@ TipoDoc.init({
                  msg:"El tipo documento solo debe contener letras"
             }
         },
-        unique: true
+        unique: {
+            args:true,
+            msg: "Este TipoDoc ya fue registrado en nuestra base de datos"
+        }
     }
 }, {
     sequelize,

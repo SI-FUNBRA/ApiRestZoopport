@@ -9,7 +9,6 @@ router.get('/', async(req,res)=>{
 //CREATE
 router.post('/',async(req,res)=>{
     const tipoarticulodonadoCREATE=await TipoArticuloDonadoModel.create({
-        idTipoArticuloDonado:req.body.idTipoArticuloDonado,
         nombreTipoArticulo:req.body.nombreTipoArticulo
     }).catch(err=>{
         res.json({err:"error al crear un tipo articulo donado",detallesError:err.errors[0]});

@@ -11,10 +11,9 @@ router.get('/', async (req,res)=>{
 //CREATE
 router.post('/',async(req,res)=>{
     const solicituddonacionespecieaCREATE=await SolicitudDonacionEspecieModel.create({
-        idDonacionEspecie:req.body.idDonacionEspecie,
-        estadoSolicitud:req.body.estadoSolicitud,
         fechaEntrega:req.body.fechaEntrega,
-        lugarEntrega:req.body.lugarEntrega
+        lugarEntrega:req.body.lugarEntrega,
+        idUsuario_FK:req.body.idUsuario_FK,
     }).catch(err=>{
         res.json({err:"error al crear el estado de una solicitud donación",detallesError:err.errors[0]});
     });

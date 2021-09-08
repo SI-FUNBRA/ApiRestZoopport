@@ -7,7 +7,7 @@ ArticuloDonadoModel.init({
     idArticuloDonado:{
         type:DataTypes.INTEGER,
         primaryKey:true,
-        autoIncrement:false
+        autoIncrement:true
     },
     nombreArticuloDonado:{
         type:DataTypes.STRING(25),

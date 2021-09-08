@@ -14,13 +14,10 @@ Localidad.init({
     nombreLocalidad: {
         type: DataTypes.STRING(20),
         allowNull: false,
-        validate:{
-            is: {
-                 is: ["^[a-z]+$",'i'],
-                 msg:"La localidad solo debe contener letras"
-            }
-        },
-        unique: true
+        unique: {
+            args:true,
+            msg: "Esta Localidad ya fue registrado en nuestra base de datos"
+        }
     }  
 }, {
     sequelize,
