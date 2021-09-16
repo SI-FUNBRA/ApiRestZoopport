@@ -8,8 +8,9 @@ const moment = require('moment');
 const jwt = require('jwt-simple');
 const UsuarioRol = require('../../database/models/usuarioRol');
 
-
 var nodemailer = require('nodemailer');
+
+
 const middelwares = require('../middelwares/middelwares');
 
 router.post('/login', async(req, res) => {
@@ -45,6 +46,7 @@ const createTokenLogin =  (usuario,usuRoles) => {
     });
 
     const payload = {
+        idUsuario: usuario.idUsuario,
         nombre: usuario.nombreUsuario,
         apellido: usuario.apellidoUsuario,
         tiposRol: tiposRol,
@@ -129,7 +131,7 @@ router.post('/olvidecontra', async(req, res) => {
         if (error) {
              res.json(error);
         } else {
-            res.status(201).json({success: 'Email enviado: ' + info.response});
+            res.status(201).json({success: 'Email enviado'});
         }
     }); 
  

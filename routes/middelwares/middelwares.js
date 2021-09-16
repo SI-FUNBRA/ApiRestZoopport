@@ -6,11 +6,11 @@ require('dotenv').config();
 
 const checkToken = (req, res, next) => {
 
-    if (!req.headers['token-credencial']) {
-        return  res.json({error: "Necesitas incluir la credencial en la cabecera(token-credencial)"});
+    if (!req.headers['token']) {
+        return  res.json({error: "Necesitas incluir la credencial en la cabecera(token)"});
     }
 
-    const tokenCredencial = req.headers['token-credencial'];
+    const tokenCredencial = req.headers['token'];
     
     let payload = {};
     
@@ -24,6 +24,7 @@ const checkToken = (req, res, next) => {
         return  res.json({error:`el token usado ya expiro`});
     }
 
+    req.idUsuario = payload.idUsuario;
     req.nombreUsu = payload.nombre;
     req.tiposRol = payload.tiposRol;
     req.apellido = payload.apellido;
@@ -36,7 +37,7 @@ const checkTokenPass = (req, res, next) => {
     if (!req.body.token) {
         return  res.json({error: "Algo a salido mal"});
     }
-
+    
     const token = req.body.token;
     
     let payload = {};

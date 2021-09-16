@@ -1,5 +1,6 @@
 const router=require('express').Router();
 const SolicitudDonacionEspecieModel=require('../../database/models/SolicitudDonacionEspecieModel');
+const ArticuloDonadoModel=require('../../database/models/ArticuloDonadoModel');
 
 
 router.get('/', async (req,res)=>{
@@ -10,16 +11,27 @@ router.get('/', async (req,res)=>{
 
 //CREATE
 router.post('/',async(req,res)=>{
-    const solicituddonacionespecieaCREATE=await SolicitudDonacionEspecieModel.create({
-        fechaEntrega:req.body.fechaEntrega,
-        lugarEntrega:req.body.lugarEntrega,
-        idUsuario_FK:req.body.idUsuario_FK,
-    }).catch(err=>{
-        res.json({err:"error al crear el estado de una solicitud donación",detallesError:err.errors[0]});
-    });
-    res.json(solicituddonacionespecieaCREATE);
 
-    res.status(201).json({success: "Solicitud Donacion Especie Creada Con Exito"});
+    
+    const solicituddonacionespecieCREATE = await SolicitudDonacionEspecieModel.create({
+        fechaEntrega: req.body.fechaEntrega,
+        lugarEntrega: req.body.lugarEntrega,
+        idUsuario_FK: req.idUsuario
+        }
+    )
+
+    const ArticulosDonados = req.body.ArticulosDonados
+
+    ArticulosDonados.forEach(async(el) => {
+        const articulodonado = await ArticuloDonadoModel.create({
+            nombreArticuloDonado: el.nombreArticuloDonado,
+            cantidadArticuloDonado: el.cantidadArticuloDonado,
+            idTipoArticuloDonado_FK: el.idTipoArticuloDonado_FK,
+            idDonacionEspecie_FK: solicituddonacionespecieCREATE.idDonacionEspecie
+        })
+    });
+
+    res.status(201).json({success:"Se ah creao"});
 });
 
 //READ 
