@@ -4,7 +4,6 @@ const sequelize = require('../db');
 const TipoDoc = require('./tipoDoc');
 const Credenciales = require('./credenciales');
 const Ciudad = require('./ciudad');
-const Barrio = require('./barrio');
 
 class Usuarios extends Model {}
 Usuarios.init({
@@ -45,7 +44,6 @@ Usuarios.init({
     telefonoCelular:{
         type: DataTypes.STRING(20),
         allowNull:false,
-        
     },
     
     fechaNacimientoUsuario: {
@@ -118,12 +116,12 @@ Usuarios.belongsTo(TipoDoc,{ foreignKey: 'idTipoDocumento_FK'});
 TipoDoc.hasMany(Usuarios,{ foreignKey: 'idTipoDocumento_FK'});
 
 //Relacion de 1:M con la tabla de Ciudad(Para el lugar de expedicion del documento)
-Usuarios.belongsTo(Ciudad,{foreignKey: 'LugarExpedicionDoc'});
+Usuarios.belongsTo(Ciudad,{as:'LugarExpedicionDocu',foreignKey: 'LugarExpedicionDoc'});
 Ciudad.hasMany(Usuarios,{foreignKey: 'LugarExpedicionDoc'});
 
 //Relacion de 1:M con la tabla de Barrio
-Usuarios.belongsTo(Barrio,{ foreignKey: 'idBarrio_FK'});
-Barrio.hasMany(Usuarios,{ foreignKey: 'idBarrio_FK'});
+Usuarios.belongsTo(Ciudad,{ foreignKey: 'idCiudad_FK'});
+Ciudad.hasMany(Usuarios,{ foreignKey: 'idCiudad_FK'});
 
 
 module.exports = Usuarios;

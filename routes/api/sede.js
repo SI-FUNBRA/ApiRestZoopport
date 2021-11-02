@@ -1,7 +1,6 @@
 const router = require('express').Router();
 
 const Sede = require('../../database/models/sede');
-const Barrio = require('../../database/models/barrio');
 
 //consultar todos los tipoUsuario
 router.get('/', async (req, res) => {

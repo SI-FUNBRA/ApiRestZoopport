@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
-const Departamento = require('./departamento');
+const Pais = require('./pais');
 
 class Ciudad extends Model {}
 Ciudad.init({
@@ -27,7 +27,7 @@ Ciudad.init({
 });
 
 //Relacion de 1:M con la tabla de Pais
-Ciudad.belongsTo(Departamento,{ foreignKey: 'idDepartamento_FK'});
-Departamento.hasMany(Ciudad,{ foreignKey: 'idDepartamento_FK'});
+Ciudad.belongsTo(Pais,{ foreignKey: 'idPais_FK'});
+Pais.hasMany(Ciudad,{ foreignKey: 'idPais_FK'});
 
 module.exports = Ciudad;

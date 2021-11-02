@@ -5,9 +5,10 @@ const Usuarios = require('../../database/models/usuario');
 const UsuarioRol = require('../../database/models/usuarioRol');
 const Credenciales = require('../../database/models/credenciales');
 const TipoDoc = require('../../database/models/tipoDoc');
-const Barrio = require('../../database/models/barrio');
 const Ciudad = require('../../database/models/ciudad');
 const bcrypt = require('bcryptjs');
+
+var nodemailer = require('nodemailer');
 
 const VerifyUser = require('../middelwares/verifyUser')
 
@@ -30,12 +31,9 @@ router.get('/', async(req, res) => {
             attributes: ['nombreCiudad']
         },
         {
-            model: Barrio,
-            attributes: ['nombreBarrio']
-        },
-        {
-            model: UsuarioRol,
-            attributes:['idRol']
+            model: Ciudad,
+            as:'LugarExpedicionDocu',
+            attributes: ['nombreCiudad']
         }
         ]
     });
@@ -63,12 +61,9 @@ router.get('/inactivos', async(req, res) => {
             attributes: ['nombreCiudad']
         },
         {
-            model: Barrio,
-            attributes: ['nombreBarrio']
-        },
-        {
-            model: UsuarioRol,
-            attributes:['idRol']
+            model: Ciudad,
+            as:'LugarExpedicionDocu',
+            attributes: ['nombreCiudad']
         }
         ]
     });
@@ -96,7 +91,7 @@ router.post('/', async (req, res) => {
        numeroDocumento: req.body.numeroDocumento,
        fechaExpedicionDoc: req.body.fechaExpedicionDoc,
        LugarExpedicionDoc:req.body.LugarExpedicionDoc,
-       idBarrio_FK: req.body.idBarrio_FK
+       idCiudad_FK: req.body.idCiudad_FK
    }).catch(err=>{
         res.json({err:"Error al crear el usuario",detallesError:err.errors[0]});
    });
@@ -121,13 +116,12 @@ router.post('/', async (req, res) => {
 });
 
 
-// CREATE Gerente
-router.post('/gerente',VerifyUser.checkAdmin, async (req, res) => {
+// CREATE 
+router.post('/create', async (req, res) => {
     
-    const ussers = await Credenciales.findAll({where: {username:req.body.username }});
+    let randomPass = Math.random().toString(36).slice(-8);
 
-    if(ussers == false){
-    req.body.pass = bcrypt.hashSync(req.body.pass, 10);
+    let randomPassEncrypt = bcrypt.hashSync(randomPass, 10);
 
    const usuario = await Usuarios.create(  {
        nombreUsuario: req.body.nombreUsuario,
@@ -140,28 +134,22 @@ router.post('/gerente',VerifyUser.checkAdmin, async (req, res) => {
        numeroDocumento: req.body.numeroDocumento,
        fechaExpedicionDoc: req.body.fechaExpedicionDoc,
        LugarExpedicionDoc:req.body.LugarExpedicionDoc,
-       idBarrio_FK: req.body.idBarrio_FK
+       idCiudad_FK: req.body.idCiudad_FK
    }).catch(err=>{
         res.json({err:"Error al crear el usuario", detallesError: err.errors[0]});
    });
    await Credenciales.create({
-       username: req.body.username,
-       pass: req.body.pass,
+       username: req.body.numeroDocumento,
+       pass: randomPassEncrypt,
        CredencialesUsuario_FK: usuario.idUsuario
    });
    await UsuarioRol.create({
        idUsuario: usuario.idUsuario,
-       idRol: 2
+       idRol: 3
    });
-    res.status(201).json({ usuario, success:'Usuario Creado Con Exito' });
-    }else{
-        
-        let err={
-            errors:[{message:"Error Nombre De Usuario Ya Existe"}]
-        }
-
-         res.json({err:"Error en crear credencial",detallesError:err.errors[0]});
-    }
+    enviarCorreoNuevoUsuario(req.body.numeroDocumento, randomPass, req.body.correoUsuario, req.body.nombreUsuario)
+    res.status(201).json({success:'Usuario Creado Con Exito' });
+    
 });
 
 // UPDATE
@@ -178,18 +166,14 @@ router.put('/actualizar/:idUsuario', async(req, res) => {
        numeroDocumento: req.body.numeroDocumento,
        fechaExpedicionDoc: req.body.fechaExpedicionDoc,
        LugarExpedicionDoc:req.body.LugarExpedicionDoc,
-       idBarrio_FK: req.body.idBarrio_FK
+       idCiudad_FK: req.body.idCiudad_FK
     },{
         where: { idUsuario: req.params.idUsuario }
     }).catch(err=>{
         res.json({err:"Error al actualizar el usuario",detallesError:err.errors[0]});
    });;
-    const credencialc = Credenciales.update({
-        username: req.body.username
-    }, {
-        where: { CredencialesUsuario_FK: req.params.idUsuario }
-    });
-     res.status(201).json({success:"Usuario Actualizado con exito"});
+
+   res.status(201).json({success:"Usuario Actualizado con exito"});
    
 });
 
@@ -224,5 +208,39 @@ router.put('/activar/:idUsuario', async(req, res) => {
 
      res.status(201).json({success: 'El Usuario a sido activado'});
 });
+
+const enviarCorreoNuevoUsuario = (usuario,contraseña, correo,nombre) =>{
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'proyectoadsi2021@gmail.com',
+            pass: 'alfrejuke2021'
+        }
+    });
+    
+    const mensajeHTML = `
+    <div>
+    <p><strong>Bienvenido A Zooport ${nombre}</strong> aquí estan tus credenciales de acceso, recuerda cambiarlas en la seccion de perfil</p>
+    <p>Usuario: ${usuario}</>
+    <p>Contraseña: ${contraseña}</>
+    </div>
+    `
+    const mailOptions = {
+        from: 'proyectoadsi2021@gmail.com',
+        to: correo,
+        subject: 'Zoopport // Bienvenido!!',
+        html: mensajeHTML
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+             res.json(error);
+        } else {
+            res.status(201).json({success: 'Email enviado'});
+        }
+    });
+}
+
+
 
 module.exports = router;

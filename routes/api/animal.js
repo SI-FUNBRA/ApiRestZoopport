@@ -2,8 +2,10 @@
 const router = require('express').Router();
 
 const Animal = require('../../database/models/animal');
+const Fotografia = require('../../database/models/fotografia')
 const EstadoAnimal = require('../../database/models/estadoAnimal');
 const Especie = require('../../database/models/Especie');
+const { now } = require('moment');
 
 //consultar todos los Animales
 router.get('/', async(req, res) => {
@@ -19,13 +21,11 @@ router.get('/', async(req, res) => {
         }],
         attributes: ['nombreAnimal','edad','fechaLlegada','historialTratamiento']
     });
-
      res.json(animal);
 });
 
 // CREATE 
 router.post('/', async (req, res) => {
-   req.body.pass = bcrypt.hashSync(req.body.pass, 10);
    
    const animal = await Animal.create({
        nombreAnimal: req.body.nombreAnimal,
@@ -37,6 +37,9 @@ router.post('/', async (req, res) => {
    }).catch(err=>{
        res.json({err:"error al crear el Animal",detallesError:err.errors[0]});
    });
+
+ /*   const foto */
+
    res.status(201).json({success: "Animal Creado Con Exito"});
 });
 

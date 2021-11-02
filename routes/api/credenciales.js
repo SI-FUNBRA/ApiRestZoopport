@@ -86,7 +86,6 @@ router.put('/cambiarcontra/:idUsuario', async (req, res)=>{
 
 router.post('/olvidecontra', async(req, res) => {
 
-
     const credencial = await Credenciales.findOne(
         {
             where: {username:req.body.username },
@@ -157,7 +156,6 @@ router.put('/restablecer-contra',middelwares.checkTokenPass, async(req,res)=>{
 
 const createTokenPass =  (idUsuario) => {
 
-  
     const payload = {
         idUsuario: idUsuario,
         createAt: moment().unix(),

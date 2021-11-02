@@ -15,7 +15,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use('/api', require('./routes/api'));
+//solucion a CORS
+const cordsValidation  = require('./CORS')
+app.use('/api',cordsValidation, require('./routes/api'));
 
 // Arrancamos el servidor
 app.listen(PORT, function () {

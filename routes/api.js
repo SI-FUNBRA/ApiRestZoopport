@@ -9,10 +9,7 @@ const apiUsuarioRolRouter = require("./api/usuarioRol");
 const apiCredencialesRouter = require("./api/credenciales");
 const apiTipoDocRouter = require("./api/tipoDoc");
 const apiPaisRouter = require("./api/pais");
-const apiDepartamentoRouter = require("./api/departamento");
 const apiCiudadRouter = require("./api/ciudad");
-const apiLocalidadRouter = require("./api/localidad");
-const apiBarrioRouter = require("./api/barrio");
 const apiTipoArticuloDonado = require("./api/TipoArticuloDonadoRoute");
 const apiArticuloDonado = require("./api/ArticuloDonadoRoute");
 const apiSolicitudDonacionEspecie = require("./api/SolicitudDonacionEspecieRoute");
@@ -37,7 +34,7 @@ const verifyUser = require("./middelwares/verifyUser");
 router.use("/rol", /* middleware.checkToken, */ apiRolRouter);
 router.use(
   "/usuarios",
-  middleware.checkToken,
+  /* middleware.checkToken, */
   /* verifyUser.checkUser, */ apiUsuariosRouter
 );
 router.use(
@@ -48,10 +45,8 @@ router.use(
 router.use("/tipodoc", /* middleware.checkToken, */ apiTipoDocRouter);
 
 router.use("/pais", /* middleware.checkToken, */ apiPaisRouter);
-router.use("/departamento", /* middleware.checkToken, */ apiDepartamentoRouter);
 router.use("/ciudad", /* middleware.checkToken, */ apiCiudadRouter);
-router.use("/localidad", /* middleware.checkToken, */ apiLocalidadRouter);
-router.use("/barrio", /* middleware.checkToken, */ apiBarrioRouter);
+
 
 router.use(
   "/tipoArticuloDonado",

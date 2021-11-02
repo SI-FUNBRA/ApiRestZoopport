@@ -1,9 +1,10 @@
 const router = require('express').Router();
 
+const Ciudad = require('../../database/models/ciudad');
 const Pais = require('../../database/models/pais');
 
 //consultar todos los tipoUsuario
-router.get('/', async (req, res) => {
+router.get('/', async (_req, res) => {
     const pais = await Pais.findAll();
      res.json(pais);
 });
@@ -38,4 +39,21 @@ router.delete('/:ididPais', async(req, res) => {
     });
      res.json({succes: 'Eliminado con exito'});
 });
+
+
+
+//Consulta de pais y demas
+router.get('/paises__ciudad', async(req,res)=>{
+    const paises = await Pais.findAll({
+        include:[
+            {
+                model: Ciudad,
+                attributes:['idCiudad','nombreCiudad'] 
+            },
+        ]
+    })
+    
+    res.json(paises);
+})
+
 module.exports = router;
