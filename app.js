@@ -16,8 +16,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //solucion a CORS
-const cordsValidation  = require('./CORS')
-app.use('/api',cordsValidation, require('./routes/api'));
+
+const cors  = require('cors')
+app.use(cors())
+app.use('/api', require('./routes/api'));
 
 // Arrancamos el servidor
 app.listen(PORT, function () {

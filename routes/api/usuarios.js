@@ -12,6 +12,14 @@ var nodemailer = require('nodemailer');
 
 const VerifyUser = require('../middelwares/verifyUser')
 
+//consultar solo los detalles de un usuario para perfil
+router.get('/usertopbar', async(req,res)=>{
+    let usuario = {
+        nombre: req.nombreUsu,
+    }
+    res.json(usuario)
+})
+
 //consultar todos los usuarios activos
 router.get('/', async(req, res) => {
 

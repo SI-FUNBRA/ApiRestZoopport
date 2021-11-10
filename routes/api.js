@@ -33,8 +33,8 @@ const verifyUser = require("./middelwares/verifyUser");
 //modulo Usuario
 router.use("/rol", /* middleware.checkToken, */ apiRolRouter);
 router.use(
-  "/usuarios",
-  /* middleware.checkToken, */
+  "/usuarios", 
+  middleware.checkToken,
   /* verifyUser.checkUser, */ apiUsuariosRouter
 );
 router.use(

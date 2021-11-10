@@ -7,7 +7,7 @@ require('dotenv').config();
 const checkToken = (req, res, next) => {
 
     if (!req.headers['token']) {
-        return  res.json({error: "Necesitas incluir la credencial en la cabecera(token)"});
+        return  res.status(401).json({error: "Necesitas iniciar sesión para acceder a este contenido"});
     }
 
     const tokenCredencial = req.headers['token'];
@@ -17,11 +17,11 @@ const checkToken = (req, res, next) => {
     try {
         payload = jwt.decode(tokenCredencial, process.env.FRASESECRETA);
     } catch (e) {
-        return  res.json({error:'token erroneo'});
+        return  res.status(401).json({error:'Necesitas iniciar sesión para acceder a este contenido'});
     }
 
     if (payload.expiredAt < moment().unix()) {
-        return  res.json({error:`el token usado ya expiro`});
+        return  res.status(401).json({error:`El tiempo limite de uso en la pagina a caducado, porfavor vuelva a iniciar sesión`});
     }
 
     req.idUsuario = payload.idUsuario;

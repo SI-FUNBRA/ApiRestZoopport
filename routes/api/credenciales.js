@@ -51,7 +51,7 @@ const createTokenLogin =  (usuario,usuRoles) => {
         apellido: usuario.apellidoUsuario,
         tiposRol: tiposRol,
         createAt: moment().unix(),
-        expiredAt: moment().add(45,'minutes').unix()
+        expiredAt: moment().add(60,'minutes').unix()
     }
 
     return jwt.encode(payload, process.env.FRASESECRETA);

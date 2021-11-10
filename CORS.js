@@ -6,4 +6,4 @@ const cordsValidation = (_req,res,next)=>{
     next();
 } 
 
-module.exports = cordsValidation
+module.exports = {cordsValidation}
