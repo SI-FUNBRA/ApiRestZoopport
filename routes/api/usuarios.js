@@ -78,53 +78,7 @@ router.get('/inactivos', async(req, res) => {
      res.json(usuarios);
 });
 
-
-// CREATE 
-router.post('/', async (req, res) => {
-    
-    const ussers = await Credenciales.findAll({where: {username:req.body.username }});
-
-    if(ussers == false){
-        
-    req.body.pass = bcrypt.hashSync(req.body.pass, 10);
-
-   const usuario = await Usuarios.create(  {
-       nombreUsuario: req.body.nombreUsuario,
-       apellidoUsuario: req.body.apellidoUsuario,
-       correoUsuario: req.body.correoUsuario,
-       telefonoFijo: req.body.telefonoFijo,
-       telefonoCelular: req.body.telefonoCelular,
-       fechaNacimientoUsuario: req.body.fechaNacimientoUsuario,
-       idTipoDocumento_FK: req.body.idTipoDocumento_FK,
-       numeroDocumento: req.body.numeroDocumento,
-       fechaExpedicionDoc: req.body.fechaExpedicionDoc,
-       LugarExpedicionDoc:req.body.LugarExpedicionDoc,
-       idCiudad_FK: req.body.idCiudad_FK
-   }).catch(err=>{
-        res.json({err:"Error al crear el usuario",detallesError:err.errors[0]});
-   });
-   await Credenciales.create({
-       username: req.body.username,
-       pass: req.body.pass,
-       CredencialesUsuario_FK: usuario.idUsuario
-   });
-   await UsuarioRol.create({
-       idUsuario: usuario.idUsuario,
-       idRol: 3
-   });
-    res.status(201).json({ usuario, success:'Usuario Creado Con Exito' });
-    }else{
-        
-        let err={
-            errors:[{message:"Error Nombre De Usuario Ya Existe"}]
-        }
-
-         res.json({err:"Error en crear credencial",detallesError:err.errors[0]});
-    }
-});
-
-
-// CREATE 
+// CREATE in admin
 router.post('/create', async (req, res) => {
     
     let randomPass = Math.random().toString(36).slice(-8);
@@ -248,7 +202,6 @@ const enviarCorreoNuevoUsuario = (usuario,contraseña, correo,nombre) =>{
         }
     });
 }
-
 
 
 module.exports = router;

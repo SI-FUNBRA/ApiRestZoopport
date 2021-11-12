@@ -10,6 +10,7 @@ const UsuarioRol = require('../../database/models/usuarioRol');
 
 var nodemailer = require('nodemailer');
 
+const {sendEmail} = require('../../helper/emailHelper')
 
 const middelwares = require('../middelwares/middelwares');
 
@@ -101,14 +102,6 @@ router.post('/olvidecontra', async(req, res) => {
      if(!credencial){
           res.json({error:"algo salio mal"});
      }   
-        
-     const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'proyectoadsi2021@gmail.com',
-            pass: 'alfrejuke2021'
-        }
-    });
     
     const token = createTokenPass(credencial.Usuario.idUsuario)
     const mensajeHTML = `
@@ -117,22 +110,10 @@ router.post('/olvidecontra', async(req, res) => {
     <button><a href="${process.env.ENLACEFRONT}usu/olvidecontra/${token}">Aquí</a></button>
     </div>
     `
-    const mensaje = "Olvidaste Tu Contraseña? No te preocupes, aquí la puedes restablecer en el siguiente link \n"+process.env.ENLACEFRONT+"usu/olvidecontra/"+token;
-    
-    var mailOptions = {
-        from: 'proyectoadsi2021@gmail.com',
-        to: credencial.Usuario.correoUsuario,
-        subject: 'Zoopport // Contraseña',
-        html: mensajeHTML
-    };
+    sendEmail(credencial.correoUsuario,'Zoopport // Contraseña',mensajeHTML)
 
-    transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-             res.json(error);
-        } else {
-            res.status(201).json({success: 'Email enviado'});
-        }
-    }); 
+    res.status(201).json({success: 'Email enviado'});
+
  
 });
 
@@ -143,7 +124,7 @@ router.put('/restablecer-contra',middelwares.checkTokenPass, async(req,res)=>{
 
     newpass = bcrypt.hashSync(newpass, 10)
 
-    const credencial = Credenciales.update({
+    await Credenciales.update({
         pass: newpass
     },{
         where:{ CredencialesUsuario_FK: req.idUsuario}
@@ -166,19 +147,80 @@ const createTokenPass =  (idUsuario) => {
 }
 
 
-router.get('/mensaje', async(req,res)=>{
-    const client = require('twilio')();
-
-    const message = await client.messages.create({
-    from: 'whatsapp:+14155238886',
-    body: 'help',
-    to: 'whatsapp:+573209897269'
-    }).catch((e)=>{
-         res.json({error:"Algo salio mal", e: e});
-    })
-
-    res.status(201).json({success:message});
+// CREATE 
+router.post('/register', async (req, res) => {
     
+    const ussers = await Credenciales.findAll({where: {username:req.body.username }});
+    let contra = req.body.pass
+    if(ussers == false){
+        
+    req.body.pass = bcrypt.hashSync(req.body.pass, 10);
+
+   const usuario = await Usuario.create(  {
+       nombreUsuario: req.body.nombreUsuario,
+       apellidoUsuario: req.body.apellidoUsuario,
+       correoUsuario: req.body.correoUsuario,
+       telefonoFijo: req.body.telefonoFijo,
+       telefonoCelular: req.body.telefonoCelular,
+       fechaNacimientoUsuario: req.body.fechaNacimientoUsuario,
+       idTipoDocumento_FK: req.body.idTipoDocumento_FK,
+       numeroDocumento: req.body.numeroDocumento,
+       fechaExpedicionDoc: req.body.fechaExpedicionDoc,
+       LugarExpedicionDoc:req.body.LugarExpedicionDoc,
+       idCiudad_FK: req.body.idCiudad_FK
+   }).catch(err=>{
+        res.json({err:"Error al crear el usuario",detallesError:err.errors[0]});
+   });
+   await Credenciales.create({
+       username: req.body.username,
+       pass: req.body.pass,
+       CredencialesUsuario_FK: usuario.idUsuario
+   });
+   await UsuarioRol.create({
+       idUsuario: usuario.idUsuario,
+       idRol: 3
+   });
+
+   let msg = `
+   <h3>Tu cuenta se ha registrado correctamente en la plataforma</h3>
+   <h4>Nombre De usuario: ${req.body.username}</h4>
+   <h4>Contraseña: ${contra}</h4>
+   <hr>
+   <p>¡Recuerda que tus datos de acceso al sistema son unicos e intransferibles!</p>
+   `
+
+   sendEmail(req.body.correoUsuario,"Bienvenido A Zooport :D", msg)
+
+    res.status(201).json({ usuario, success:'Usuario Creado Con Exito' });
+    }else{
+        
+        let err={
+            errors:[{message:"Error Nombre De Usuario Ya Existe"}]
+        }
+
+         res.json({err:"Error en crear credencial",detallesError:err.errors[0]});
+    }
+});
+
+router.post('/validateparam', async(req, res)=>{
+    let { nameParam, param } = req.body
+
+    await Usuario.findOne({
+        where:{ [nameParam]: param}
+    }).then(usuParam=>{
+        (!usuParam)?res.json({resul:true}):res.json({resul:false});
+    })
 })
+router.post('/validateuser', async(req, res)=>{
+    let { param } = req.body
+
+    await Credenciales.findOne({
+        where:{ username: param}
+    }).then(userRes=>{
+        (!userRes)?res.json({resul:true}):res.json({resul:false});
+    })
+})
+
+
 
 module.exports = router;
