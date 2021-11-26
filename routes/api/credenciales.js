@@ -96,21 +96,21 @@ router.post('/olvidecontra', async(req, res) => {
             },
             attributes: ['username', 'pass']
         }).catch((e)=>{
-          res.json({error:"algo salio mal"});
+          res.status(200).json({error:"algo salio mal"});
         })
         
      if(!credencial){
-          res.json({error:"algo salio mal"});
+          res.status(200).json({error:"algo salio mal"});
      }   
     
     const token = createTokenPass(credencial.Usuario.idUsuario)
     const mensajeHTML = `
     <div>
     <p><strong>Olvidaste Tu Contraseña?</strong> No te preocupes, aquí la puedes restablecer en el siguiente link</p>
-    <button><a href="${process.env.ENLACEFRONT}usu/olvidecontra/${token}">Aquí</a></button>
+    <a href="${process.env.ENLACEFRONT}log/olvidecontra/${token}">Aquí</a>
     </div>
     `
-    sendEmail(credencial.correoUsuario,'Zoopport // Contraseña',mensajeHTML)
+    sendEmail(credencial.Usuario.correoUsuario,'Zoopport // Contraseña',mensajeHTML)
 
     res.status(201).json({success: 'Email enviado'});
 
@@ -120,18 +120,17 @@ router.post('/olvidecontra', async(req, res) => {
 
 router.put('/restablecer-contra',middelwares.checkTokenPass, async(req,res)=>{
    
-    let {newpass} = req.body
+    let {pass} = req.body
 
-    newpass = bcrypt.hashSync(newpass, 10)
+    pass = bcrypt.hashSync(pass, 10)
 
     await Credenciales.update({
-        pass: newpass
+        pass: pass
     },{
         where:{ CredencialesUsuario_FK: req.idUsuario}
     }).catch((e)=>{
-         res.json({error:"Algo A Salido Mal"});
+         res.json({error:"Algo A Salido Mal ola"});
     })
-
     res.status(201).json({success:"Contraseña Cambiada Con Exito"});
 })
 

@@ -34,22 +34,22 @@ const checkToken = (req, res, next) => {
 
 const checkTokenPass = (req, res, next) => {
  
-    if (!req.body.token) {
-        return  res.json({error: "Algo a salido mal"});
+    if (!req.headers['tokenpass']) {
+        return  res.json({error: "Algo a salido mal 1"});
     }
     
-    const token = req.body.token;
+    const tokenpass = req.headers['tokenpass'];
     
     let payload = {};
     
     try {
-        payload = jwt.decode(token, process.env.FRASESECRETA);
+        payload = jwt.decode(tokenpass, process.env.FRASESECRETA);
     } catch (e) {
-        return  res.json({error:'Algo a salido mal'});
+        return  res.json({error:'Algo a salido mal 2'});
     }
 
     if (payload.expiredAt < moment().unix()) {
-        return  res.json({error:'El Tiempo Limite Para Realizar Esta Accion Ya Expiro'});
+        return  res.json({error:'El tiempo limite para realizar esta acción ya expiró. Porfavor vuelva a solicitar otro enlace.'});
     }
 
     req.idUsuario = payload.idUsuario;

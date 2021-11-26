@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 // CREATE 
 router.post('/', async (req, res) => {
      
-   const TipoDoc = await TipoDocumento.create(  {
+   await TipoDocumento.create(  {
        nombreTipoDoc: req.body.nombreTipoDoc,     
    }).catch(err=>{
         res.json({err:"error al crear el Tipo de Documento",detallesError:err.errors[0]});
@@ -24,8 +24,8 @@ router.post('/', async (req, res) => {
 });
 
 // UPDATE
-router.put('/actualizar/:idTiUsuario', async(req, res) => {
-    const TipoDoc = await TipoDocumento.update({
+router.put('/actualizar/:idTipoDoc', async(req, res) => {
+    await TipoDocumento.update({
         nombreTipoDoc: req.body.nombreTipoDoc,
         
     },{
@@ -36,9 +36,13 @@ router.put('/actualizar/:idTiUsuario', async(req, res) => {
 });
 
 router.delete('/:idTipoDoc', async(req, res) => {
+    
     await TipoDocumento.destroy({
         where: { idTipoDoc: req.params.idTipoDoc}
-    });
-     res.json({succes: 'Tipo Documento Eliminado con exito'});
+    }).catch(err=>{
+        res.json({err: 'Error al eliminiar (asegurese que ningun usuario tenga este tipo de documento)'});
+    })
+    res.status(201).json({success: 'Tipo Documento Eliminado con exito'});
+    
 });
 module.exports = router;
