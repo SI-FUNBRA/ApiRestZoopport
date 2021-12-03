@@ -1,5 +1,6 @@
 const router = require('express').Router();
 
+const Usuarios = require('../../database/models/usuario');
 const UsuarioRol = require('../../database/models/usuarioRol');
 
 
@@ -8,11 +9,13 @@ router.post('/nuevoRol', async(req, res) => {
 
     let {idUsuario,idRol} = req.body
 
+    console.log(idUsuario, idRol)
+
     const usuarioRolV = await UsuarioRol.findAll({ where:{idUsuario:idUsuario, idRol:idRol}})
 
     
     if(!usuarioRolV[0]){
-    const usuarioRol =  await UsuarioRol.create({
+        await UsuarioRol.create({
         idUsuario: idUsuario,
         idRol:idRol}).catch((e)=>{
              res.json({err:"Error Al Establecer Un Nuevo Tipo De Rol"});
@@ -20,7 +23,7 @@ router.post('/nuevoRol', async(req, res) => {
 
     res.status(201).json({success:"El Rol Se Establecio Con Exito"});
     }else{
-        const usuarioRol = await UsuarioRol.update({
+        await UsuarioRol.update({
         estado: true
     },{
         where:{ idUsuario: idUsuario}
@@ -32,18 +35,29 @@ router.post('/nuevoRol', async(req, res) => {
     } 
 });
 
-router.put('/inactivarRol/:idUsuario',async(req,res)=>{
-    const usuarioRol = await UsuarioRol.update({
-        estado: false
-    },{
-        where:{ idUsuario: req.params.idUsuario}
+router.put('/inactivarRol',async(req,res)=>{
+    const prueba = await UsuarioRol.destroy({
+        where:{ idUsuario: req.body.idUsuario, idRol: req.body.idRol}
     }).catch((e)=>{
          res.json({err:"Error Al Inactivar El Rol Para Este Usuario"});
     })
 
-    res.status(201).json({success:"Se Inactivo El Rol Con Exito"});
+    res.status(201).json({success:"Se Inactivo El Rol Con Exito", prueba:prueba});
 })
 
+//traer todos los roles y usuarios
+router.get('/rolesusuarios', async(req,res)=>{
+    
+    await Usuarios.findAll({
+        include: [{
+            model: UsuarioRol,
+            attributes:['idUsuario', 'idRol']
+        }],
+        attributes:['idUsuario', 'nombreUsuario', 'apellidoUsuario']
+    }).then(response=>{
+        res.json(response);
+    })
 
+})
 
 module.exports = router;

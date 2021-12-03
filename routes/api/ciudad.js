@@ -1,16 +1,16 @@
 const router = require('express').Router();
 
 const Ciudad = require('../../database/models/ciudad');
+const Pais = require('../../database/models/pais')
 
 //consultar todos los tipoUsuario
 router.get('/', async (req, res) => {
     
     const ciudad = await Ciudad.findAll({
         include:{
-            model: Departamento,
-            attributes: ['nombreDepartamento']
+            model: Pais,
+            attributes: ['nombrePais']
         },
-        attributes:['idCiudad','nombreCiudad']
     });
      res.json(ciudad);
 });
@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
      
    const ciudad = await Ciudad.create(  {
        nombreCiudad: req.body.nombreCiudad, 
-       idDepartamento_FK: req.body.idDepartamento_FK    
+       idPais_FK: req.body.idPais_FK    
    }).catch(err=>{
         res.json({err:"error al crear la Ciudad",detallesError:err.errors[0]});
     });
@@ -31,9 +31,9 @@ router.post('/', async (req, res) => {
 
 // UPDATE
 router.put('/actualizar/:idCiudad', async(req, res) => {
-    const ciudad = await Ciudad.update({
+    await Ciudad.update({
         nombreCiudad: req.body.nombreCiudad,
-        idDepartamento_FK: req.body.idDepartamento_FK
+        idPais_FK: req.body.idPais_FK
     },{
         where: { idCiudad: req.params.idCiudad }
     });
@@ -44,7 +44,9 @@ router.put('/actualizar/:idCiudad', async(req, res) => {
 router.delete('/:idCiudad', async(req, res) => {
     await Ciudad.destroy({
         where: { idCiudad: req.params.idCiudad}
-    });
-     res.json({succes: 'Ciudad Eliminada con exito'});
+    }).catch(()=>{
+        res.json({err: 'Error al eliminiar (asegurese que ninguna seccion tenga esta ciudad asociada)'});
+    })
+     res.status(201).json({success: 'Ciudad Eliminada con exito'});
 });
 module.exports = router;

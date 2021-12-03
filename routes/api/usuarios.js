@@ -10,18 +10,36 @@ const bcrypt = require('bcryptjs');
 
 var nodemailer = require('nodemailer');
 
-const VerifyUser = require('../middelwares/verifyUser')
+const VerifyUser = require('../middelwares/verifyUser');
+
+
+//consulta por id
+router.get('/usuario/:idUsuario', async(req,res)=>{
+    const usuario = await Usuarios.findAll(
+        {
+            where:{idUsuario:req.params.idUsuario},
+            include:{
+            model: Credenciales,
+            attributes: ['username']
+            }
+        })
+    usuario[0].dataValues.username = usuario[0].Credencial.username
+    res.json(usuario[0]);
+})
 
 //consultar solo los detalles de un usuario para perfil
 router.get('/usertopbar', async(req,res)=>{
     let usuario = {
         nombre: req.nombreUsu,
+        id: req.idUsuario,
+        Rol: req.RolPrincipal,
+        roles: req.tiposRol
     }
     res.json(usuario)
 })
 
 //consultar todos los usuarios activos
-router.get('/', async(req, res) => {
+router.get('/',VerifyUser.checkUser, async(req, res) => {
 
     const usuarios = await Usuarios.findAll(
         {
@@ -117,7 +135,7 @@ router.post('/create', async (req, res) => {
 // UPDATE
 router.put('/actualizar/:idUsuario', async(req, res) => {
     
-    const usuario = await Usuarios.update({
+    await Usuarios.update({
        nombreUsuario: req.body.nombreUsuario,
        apellidoUsuario: req.body.apellidoUsuario,
        correoUsuario: req.body.correoUsuario,
@@ -134,7 +152,7 @@ router.put('/actualizar/:idUsuario', async(req, res) => {
     }).catch(err=>{
         res.json({err:"Error al actualizar el usuario",detallesError:err.errors[0]});
    });;
-
+ 
    res.status(201).json({success:"Usuario Actualizado con exito"});
    
 });

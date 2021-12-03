@@ -27,6 +27,7 @@ const checkToken = (req, res, next) => {
     req.idUsuario = payload.idUsuario;
     req.nombreUsu = payload.nombre;
     req.tiposRol = payload.tiposRol;
+    req.RolPrincipal = payload.RolPrincipal;
     req.apellido = payload.apellido;
     
     next();

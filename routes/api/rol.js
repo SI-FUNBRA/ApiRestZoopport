@@ -35,8 +35,10 @@ router.put('/actualizar/:idRol', async(req, res) => {
 
 router.delete('/:ididRol', async(req, res) => {
     await Rol.destroy({
-        where: { idRol: req.params.idRol}
-    });
-     res.json({succes: 'Rol Eliminado con exito'});
+        where: { idRol: req.params.ididRol}
+    }).catch(()=>{
+        res.json({err: 'Error al eliminiar (asegurese que ningun usuario tenga este rol)'});
+    })
+    res.status(201).json({success: 'Rol Eliminado con exito'});
 });
 module.exports = router;

@@ -31,60 +31,59 @@ const middleware = require("./middelwares/middelwares");
 const verifyUser = require("./middelwares/verifyUser");
 
 //modulo Usuario
-router.use("/rol", /* middleware.checkToken, */ apiRolRouter);
+router.use("/rol", middleware.checkToken, verifyUser.checkAdmin, apiRolRouter);
 router.use(
   "/usuarios", 
-  middleware.checkToken,
-  /* verifyUser.checkUser, */ apiUsuariosRouter
+  middleware.checkToken, apiUsuariosRouter
 );
 router.use(
   "/usuarioRol",
-  /* middleware.checkToken, verifyUser.checkUser, */ apiUsuarioRolRouter
+   middleware.checkToken, verifyUser.checkAdmin, apiUsuarioRolRouter
 );
 
-router.use("/tipodoc", /* middleware.checkToken, */ apiTipoDocRouter);
+router.use("/tipodoc", apiTipoDocRouter);
 
-router.use("/pais", /* middleware.checkToken, */ apiPaisRouter);
-router.use("/ciudad", /* middleware.checkToken, */ apiCiudadRouter);
+router.use("/pais", apiPaisRouter);
+router.use("/ciudad", middleware.checkToken, verifyUser.checkAdmin, apiCiudadRouter);
 
 
 router.use(
   "/tipoArticuloDonado",
-  /* middleware.checkToken, */ apiTipoArticuloDonado
+  middleware.checkToken, apiTipoArticuloDonado
 );
-router.use("/articuloDonado", /* middleware.checkToken, */ apiArticuloDonado);
+router.use("/articuloDonado", middleware.checkToken, apiArticuloDonado);
 router.use(
   "/solicitudDonacionEspecie",
-  middleware.checkToken, apiSolicitudDonacionEspecie
+  /* middleware.checkToken, */ apiSolicitudDonacionEspecie
 );
-router.use("/metodoDePago", /* middleware.checkToken, */ apiMetodoDePagoRouter);
+router.use("/metodoDePago", middleware.checkToken, apiMetodoDePagoRouter);
 router.use(
   "/donacionEconomica",
-  /* middleware.checkToken, */ apiDonacionEconomica
+  middleware.checkToken, apiDonacionEconomica
 );
-router.use("/pregunta", /* middleware.checkToken, */ apiPreguntaRouter);
-router.use("/respuesta", /* middleware.checkToken, */ apiRespuestaRouter);
+router.use("/pregunta", middleware.checkToken, apiPreguntaRouter);
+router.use("/respuesta", middleware.checkToken, apiRespuestaRouter);
 router.use(
   "/solicitudAdopcion",
-  /* middleware.checkToken, */ apiSolicitudAdopcionRouter
+  middleware.checkToken, apiSolicitudAdopcionRouter
 );
-router.use("/tipoAnimal", /* middleware.checkToken, */ apiTipoAnimalRouter);
-router.use("/especie", /* middleware.checkToken, */ apiEspecieRouter);
-router.use("/estadoAnimal", /* middleware.checkToken, */ apiEstadoAnimalRouter);
+router.use("/tipoAnimal", middleware.checkToken, apiTipoAnimalRouter);
+router.use("/especie", middleware.checkToken, apiEspecieRouter);
+router.use("/estadoAnimal", middleware.checkToken, apiEstadoAnimalRouter);
 router.use(
   "/tipoTratamiento",
-  /* middleware.checkToken, */ apiTipoTratamientoRouter
+  middleware.checkToken, apiTipoTratamientoRouter
 );
-router.use("/tratamiento", /* middleware.checkToken, */ apiTratamientoRouter);
+router.use("/tratamiento", middleware.checkToken, apiTratamientoRouter);
 router.use(
   "/tipoAntecedente",
-  /* middleware.checkToken, */ apiTipoAntecedenteRouter
+  middleware.checkToken, apiTipoAntecedenteRouter
 );
-router.use("/antecedente", /* middleware.checkToken, */ apiAntecedenteRouter);
-router.use("/fotografia", /* middleware.checkToken, */ apiFotografiaRouter);
-router.use("/animal", /* middleware.checkToken, */ apiAnimalRouter);
-router.use("/sede", /* middleware.checkToken, */ apiSedeRouter);
-router.use("/cita", /* middleware.checkToken, */ apiCitaRouter);
+router.use("/antecedente", middleware.checkToken, apiAntecedenteRouter);
+router.use("/fotografia", middleware.checkToken, apiFotografiaRouter);
+router.use("/animal", middleware.checkToken, apiAnimalRouter);
+router.use("/sede", middleware.checkToken, apiSedeRouter);
+router.use("/cita", middleware.checkToken, apiCitaRouter);
 
 //credenciales
 router.use("/credenciales", apiCredencialesRouter);

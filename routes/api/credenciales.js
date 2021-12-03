@@ -37,6 +37,9 @@ router.post('/login', async(req, res) => {
     }
 });
 
+router.post('/change-rol',middelwares.checkToken, async(req, res)=>{
+    const {rolChange} = req.body
+})
 
 const createTokenLogin =  (usuario,usuRoles) => {
 
@@ -51,6 +54,7 @@ const createTokenLogin =  (usuario,usuRoles) => {
         nombre: usuario.nombreUsuario,
         apellido: usuario.apellidoUsuario,
         tiposRol: tiposRol,
+        RolPrincipal: tiposRol[0],
         createAt: moment().unix(),
         expiredAt: moment().add(60,'minutes').unix()
     }
@@ -58,6 +62,14 @@ const createTokenLogin =  (usuario,usuRoles) => {
     return jwt.encode(payload, process.env.FRASESECRETA);
 }
 
+router.put('/cambiousername/:idUsuario', async(req,res)=>{
+    await Credenciales.update({
+        username: req.body.username
+    },{
+        where:{CredencialesUsuario_FK: req.params.idUsuario}
+    })
+     res.json({success:"todo nice"});
+})
 
 router.put('/cambiarcontra/:idUsuario', async (req, res)=>{
     const oldpass = await Credenciales.findOne({where:{CredencialesUsuario_FK: req.params.idUsuario}})
@@ -69,7 +81,7 @@ router.put('/cambiarcontra/:idUsuario', async (req, res)=>{
     }
     
     if(iguales){
-        req.body.newpass = bcrypt.hashSync(req.body.newpass, 10);
+        req.body.newpass = bcrypt.hashSync(req.body.pass, 10);
 
     Credenciales.update({
         pass: req.body.newpass
@@ -202,23 +214,57 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/validateparam', async(req, res)=>{
-    let { nameParam, param } = req.body
-
-    await Usuario.findOne({
-        where:{ [nameParam]: param}
-    }).then(usuParam=>{
-        (!usuParam)?res.json({resul:true}):res.json({resul:false});
-    })
+    let { nameParam, param, id } = req.body
+    
+    if(!id){
+        await Usuario.findOne({
+            where:{ [nameParam]: param}
+        }).then(usuParam=>{
+            (!usuParam)?res.json({resul:true}):res.json({resul:false});
+        })
+    }else{
+        const usuarioParam = await Usuario.findOne({
+            where:{ [nameParam]: param, idUsuario: id}
+        })
+        const usuarioOtroParam = await Usuario.findOne({
+            where:{ [nameParam]: param}
+        })
+        if(usuarioParam && usuarioOtroParam){
+            res.json({resul:true})
+        }else if (usuarioOtroParam){
+            res.json({resul:false})
+        }else{
+            res.json({resul:true})
+        }
+    }
 })
 router.post('/validateuser', async(req, res)=>{
-    let { param } = req.body
+    let { param, id } = req.body
 
-    await Credenciales.findOne({
-        where:{ username: param}
-    }).then(userRes=>{
-        (!userRes)?res.json({resul:true}):res.json({resul:false});
-    })
+    if(!id){
+        await Credenciales.findOne({
+            where:{ username: param}
+        }).then(userRes=>{
+            (!userRes)?res.json({resul:true}):res.json({resul:false});
+        })
+    }else{
+        const usuarioParam = await Credenciales.findOne({
+            where:{ username: param, CredencialesUsuario_FK: id}
+        })
+        const usuarioOtroParam = await Credenciales.findOne({
+            where:{ username: param}
+        })
+        if(usuarioParam && usuarioOtroParam){
+            res.json({resul:true})
+        }else if (usuarioOtroParam){
+            res.json({resul:false})
+        }else{
+            res.json({resul:true})
+        }
+    }
 })
+
+
 
 
 

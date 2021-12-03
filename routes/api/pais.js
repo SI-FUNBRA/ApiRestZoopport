@@ -2,15 +2,17 @@ const router = require('express').Router();
 
 const Ciudad = require('../../database/models/ciudad');
 const Pais = require('../../database/models/pais');
+const verifyUser = require('../middelwares/verifyUser');
+const middleware = require('../middelwares/middelwares');
 
-//consultar todos los tipoUsuario
-router.get('/', async (_req, res) => {
+//consultar todos los Paises
+router.get('/', middleware.checkToken, verifyUser.checkAdmin, async (_req, res) => {
     const pais = await Pais.findAll();
      res.json(pais);
 });
 
 // CREATE 
-router.post('/', async (req, res) => {
+router.post('/', middleware.checkToken, verifyUser.checkAdmin, async (req, res) => {
      
    const pais = await Pais.create(  {
        nombrePais: req.body.nombrePais,     
@@ -22,7 +24,7 @@ router.post('/', async (req, res) => {
 });
 
 // UPDATE
-router.put('/actualizar/:idPais', async(req, res) => {
+router.put('/actualizar/:idPais', middleware.checkToken, verifyUser.checkAdmin, async(req, res) => {
     const pais = await Pais.update({
         nombrePais: req.body.nombrePais,
         
@@ -33,11 +35,19 @@ router.put('/actualizar/:idPais', async(req, res) => {
      res.json({success:"Actualizado con exito"});
 });
 
-router.delete('/:ididPais', async(req, res) => {
-    await Pais.destroy({
+router.delete('/:idPais', middleware.checkToken, verifyUser.checkAdmin, async(req, res) => {
+
+    const ciudad = await Ciudad.findOne({where:{idPais_FK: req.params.idPais}})
+if(!ciudad){
+     await Pais.destroy({
         where: { idPais: req.params.idPais}
-    });
-     res.json({succes: 'Eliminado con exito'});
+    }).catch(()=>{
+        res.json({err: 'Error al eliminiar (asegurese que ninguna seccion tenga este país asociado)'});
+    })
+    res.status(201).json({success: 'País Eliminado con exito'});
+    }else{
+        res.json({err: 'Error al eliminiar (asegurese que ninguna seccion tenga este país asociado)'}); 
+    }
 });
 
 
