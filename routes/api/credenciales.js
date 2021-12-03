@@ -39,22 +39,35 @@ router.post('/login', async(req, res) => {
 
 router.post('/change-rol',middelwares.checkToken, async(req, res)=>{
     const {rolChange} = req.body
+    const compRol = await UsuarioRol.findOne({where:{idUsuario:req.idUsuario, idRol:rolChange}})
+
+    if(compRol){
+        const usuario = await Usuario.findByPk(req.idUsuario);
+        const usuRoles = await  UsuarioRol.findAll({where:{idUsuario: req.idUsuario}});
+        res.status(201).json({ success: createTokenLogin(usuario, usuRoles, rolChange) });
+    }else{
+        res.status(403).json({ error: "El rol seleccionado no está activado."});
+    }
 })
 
-const createTokenLogin =  (usuario,usuRoles) => {
+const createTokenLogin =  (usuario,usuRoles, RolPrincipal) => {
 
     tiposRol = []
 
     usuRoles.forEach(el => {
         tiposRol.push(el.idRol)
     });
+    
+    let RolP 
+
+    (RolPrincipal)?RolP=RolPrincipal:RolP=tiposRol[0]
 
     const payload = {
         idUsuario: usuario.idUsuario,
         nombre: usuario.nombreUsuario,
         apellido: usuario.apellidoUsuario,
         tiposRol: tiposRol,
-        RolPrincipal: tiposRol[0],
+        RolPrincipal: RolP,
         createAt: moment().unix(),
         expiredAt: moment().add(60,'minutes').unix()
     }
