@@ -1,6 +1,7 @@
 const router = require('express').Router();
 
-const TipoAnimal = require('../../database/models/tipoAnimal');
+const TipoAnimal = require('../../database/models/tipoanimal');
+
 
 //consultar todos los tipoUsuario
 router.get('/', async (req, res) => {
