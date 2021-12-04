@@ -2,7 +2,7 @@ const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
 const EstadoAnimal = require('./estadoAnimal');
-const Especie = require('./especiespecie');
+const Especie = require('./especie');
 
 class Animal extends Model {}
 Animal.init({
