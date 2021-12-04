@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const Tratamiento = require('../../database/models/tratamiento');
-const TipoTratamiento = require('../../database/models/TipoTratamiento');
+const TipoTratamiento = require('../../database/models/tipoTratamiento');
 
 //consultar todos los tipo Tratamiento
 router.get('/', async (req, res) => {
