@@ -4,7 +4,7 @@ const router = require('express').Router();
 const Animal = require('../../database/models/animal');
 const Fotografia = require('../../database/models/fotografia')
 const EstadoAnimal = require('../../database/models/estadoAnimal');
-const Especie = require('../../database/models/Especie');
+const Especie = require('../../database/models/especie');
 const { now } = require('moment');
 
 //consultar todos los Animales
