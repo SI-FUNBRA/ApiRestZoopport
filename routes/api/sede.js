@@ -2,13 +2,15 @@ const router = require('express').Router();
 
 const Sede = require('../../database/models/sede');
 
+const Pais = require('../../database/models/pais') 
+
 //consultar todos los tipoUsuario
 router.get('/', async (req, res) => {
     
     const sede = await Sede.findAll({
         include: {
-            model: Barrio,
-            attributes: ['nombreBarrio']
+            model: Pais,
+            attributes: ['nombrePais']
         },
         attributes:['idSede','nombreSede','telefonoSede','correoSede','Nomenclatura']
     });
@@ -20,10 +22,10 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
      
    const sede = await Sede.create(  {
+       nombreSede: req.body.nombreSede,
        telefonoSede: req.body.telefonoSede, 
        correoSede: req.body.correoSede, 
-       Nomenclatura: req.body.Nomenclatura, 
-       idBarrio_FK: req.body.idBarrio_FK,    
+       Nomenclatura: req.body.Nomenclatura    
    }).catch(err=>{
         res.json({err:"error al crear una nueva sede",detallesError:err.errors[0]});
    });
@@ -34,6 +36,7 @@ router.post('/', async (req, res) => {
 // UPDATE
 router.put('/actualizar/:idSede', async(req, res) => {
     const sede = await Sede.update({
+        nombreSede: req.body.nombreSede,
        telefonoSede: req.body.telefonoSede, 
        correoSede: req.body.correoSede, 
        Nomenclatura: req.body.Nomenclatura, 
