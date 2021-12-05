@@ -11,6 +11,10 @@ Sede.init({
         primaryKey: true,
         autoIncrement: true 
     },
+    nombreSede: {
+        type: DataTypes.STRING(20),
+        allowNull: false
+    },
     telefonoSede: {
         type: DataTypes.STRING(20),
         allowNull: false,

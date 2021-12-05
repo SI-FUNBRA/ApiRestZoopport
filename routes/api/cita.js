@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
             model: Sede,
             attributes: ['telefonoSede','correoSede','nomenclatura']
         },
-        attributes:['idCita','fechaCita','MotivoCita']
+        attributes:['idCita','fechaCita','motivoCita']
     });
      res.json(cita);
 });
