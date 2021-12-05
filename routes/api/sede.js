@@ -11,8 +11,7 @@ router.get('/', async (req, res) => {
         include: {
             model: Pais,
             attributes: ['nombrePais']
-        },
-        attributes:['idSede','nombreSede','telefonoSede','correoSede','Nomenclatura']
+        }
     });
      res.json(sede);
 });
@@ -39,8 +38,7 @@ router.put('/actualizar/:idSede', async(req, res) => {
         nombreSede: req.body.nombreSede,
        telefonoSede: req.body.telefonoSede, 
        correoSede: req.body.correoSede, 
-       Nomenclatura: req.body.Nomenclatura, 
-       idBarrio_FK: req.body.idBarrio_FK 
+       Nomenclatura: req.body.Nomenclatura
     },{
         where: { idSede: req.params.idSede }
     });
