@@ -7,10 +7,10 @@ const Pais = require('../../database/models/pais')
 router.get('/', async (req, res) => {
     
     const ciudad = await Ciudad.findAll({
-        // include:{
-        //     model: Pais,
-        //     attributes: ['nombrePais']
-        // },
+        include:{
+             model: Pais,
+             attributes: ['nombrePais']
+        },
 
         attributes:['idCiudad','nombreCiudad']
     });
