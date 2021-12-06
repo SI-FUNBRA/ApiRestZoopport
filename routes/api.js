@@ -27,6 +27,9 @@ const apiAnimalRouter = require("./api/animal");
 const apiSedeRouter = require("./api/sede");
 const apiCitaRouter = require("./api/cita");
 
+const apiDocumentoSolicitudAdopcion = require("./api/documentoSolicitud");
+const apiEnfermedadRouter = require("./api/enfermedad");
+
 const middleware = require("./middelwares/middelwares");
 const verifyUser = require("./middelwares/verifyUser");
 
@@ -63,25 +66,36 @@ router.use(
 );
 router.use("/pregunta", middleware.checkToken, apiPreguntaRouter);
 router.use("/respuesta", middleware.checkToken, apiRespuestaRouter);
+
 router.use(
   "/solicitudAdopcion",
   middleware.checkToken, apiSolicitudAdopcionRouter
 );
-router.use("/tipoAnimal", middleware.checkToken, apiTipoAnimalRouter);
+
+router.use("/documentoSolicitud",/* middleware.checkToken, */ apiDocumentoSolicitudAdopcion);
+
+router.use("/tipoAnimal", /* middleware.checkToken, */ apiTipoAnimalRouter);
+
 router.use("/especie", middleware.checkToken, apiEspecieRouter);
 router.use("/estadoAnimal", middleware.checkToken, apiEstadoAnimalRouter);
 router.use(
   "/tipoTratamiento",
   middleware.checkToken, apiTipoTratamientoRouter
 );
-router.use("/tratamiento", middleware.checkToken, apiTratamientoRouter);
+
+router.use("/enfermedad", /* middleware.checkToken, */ apiEnfermedadRouter);
+
+router.use("/tratamiento", /* middleware.checkToken, */ apiTratamientoRouter);
 router.use(
   "/tipoAntecedente",
   middleware.checkToken, apiTipoAntecedenteRouter
 );
 router.use("/antecedente", middleware.checkToken, apiAntecedenteRouter);
-router.use("/fotografia", middleware.checkToken, apiFotografiaRouter);
-router.use("/animal", middleware.checkToken, apiAnimalRouter);
+
+router.use("/fotografia", /* middleware.checkToken, */ apiFotografiaRouter);
+
+
+router.use("/animal", /* middleware.checkToken, */ apiAnimalRouter);
 router.use("/sede", middleware.checkToken, apiSedeRouter);
 router.use("/cita", middleware.checkToken, apiCitaRouter);
 

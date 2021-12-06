@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const TipoAnimal = require('../../database/models/tipoAnimal');
+const TipoAnimal = require('../../database/models/TipoAnimal');
 
 //consultar todos los tipoUsuario
 router.get('/', async (req, res) => {
@@ -10,10 +10,10 @@ router.get('/', async (req, res) => {
 
 
 // CREATE 
-router.post('/', async (req, res) => {
+router.post('/nuevo', async (req, res) => {
      
    const tipoAnimal = await TipoAnimal.create(  {
-       nombreTipoAnimal: req.body.nombreTipoAnimal,     
+       nombreTipoAnimal: req.body.nombreTipoAnimal  
    }).catch(err=>{
         res.json({err:"error al crear un tipo animal",detallesError:err.errors[0]});
     });
@@ -33,7 +33,7 @@ router.put('/actualizar/:idTipoAnimal', async(req, res) => {
      res.json({success:"Tipo Animal Actualizado con exito"});
 });
 
-router.delete('/:ididTipoAnimal', async(req, res) => {
+router.delete('/:idTipoAnimal', async(req, res) => {
     await TipoAnimal.destroy({
         where: { idTipoAnimal: req.params.idTipoAnimal}
     });

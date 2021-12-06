@@ -1,8 +1,10 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
-const EstadoAnimal = require('./estadoAnimal');
-const Especie = require('./Especie');
+const TipoAnimal = require('./TipoAnimal');
+const Enfermedad = require('./Enfermedad');
+const Tratamiento = require('./Tratamiento');
+const Fotografia = require('./Fotografia');
 
 class Animal extends Model {}
 Animal.init({
@@ -18,14 +20,8 @@ Animal.init({
         
     },
     edad: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.INTEGER,
         allowNull: false,
-        validate:{
-            isDate:{
-                args:true,
-                msg:"La edad tiene que contener el formato AAAA-MM-DD permitiendo ingresar la fecha de nacimiento del animal"
-            }
-        }
     },
     fechaLlegada: {
         type: DataTypes.DATEONLY,
@@ -37,8 +33,32 @@ Animal.init({
             }
         }
     },
-    historialTratamiento: {
-        type: DataTypes.STRING(500),
+    motivoLlegada: {
+        type: DataTypes.STRING(100),
+        allowNull: false
+    },
+    genero: {
+        type: DataTypes.STRING(7),
+        allowNull: false
+    },
+    idEnfermedad_FK: {
+        type: DataTypes.INTEGER, 
+        allowNull: false
+    },
+    idTratamiento_FK: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    estadoAnimal: {
+        type: DataTypes.STRING(30),
+        allowNull: false
+    },
+    idTipoAnimal_FK: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    idFotografia_FK: {
+        type: DataTypes.INTEGER,
         allowNull: false
     },
 }, {
@@ -48,12 +68,20 @@ Animal.init({
     freezeTableName: true
 });
 
-//Relacion de 1:M con la tabla de EstadoAnimal
-Animal.belongsTo(EstadoAnimal,{ foreignKey: 'idEstadoAnimal_FK'});
-EstadoAnimal.hasMany(Animal,{ foreignKey: 'idEstadoAnimal_FK'});
+//Relacion de 1:M con la tabla de Enfermedad
+Animal.belongsTo(Enfermedad,{ foreignKey: 'idEnfermedad_FK'});
+Enfermedad.hasMany(Animal,{ foreignKey: 'idEnfermedad_FK'});
 
-//Relacion de 1:M con la tabla de Especie
-Animal.belongsTo(Especie,{ foreignKey: 'idEspecie_FK'});
-Especie.hasMany(Animal,{ foreignKey: 'idEspecie_FK'});
+//Relacion de 1:M con la tabla de Enfermedad
+Animal.belongsTo(Tratamiento,{ foreignKey: 'idTratamiento_FK'});
+Tratamiento.hasMany(Animal,{ foreignKey: 'idTratamiento_FK'});
+
+//Relacion de 1:M con la tabla de TipoAnimal
+Animal.belongsTo(TipoAnimal,{ foreignKey: 'idTipoAnimal_FK'});
+TipoAnimal.hasMany(Animal,{ foreignKey: 'idTipoAnimal_FK'});
+
+//Relacion de 1:M con la tabla de Fotografia
+Animal.belongsTo(Fotografia,{ foreignKey: 'idFotografia_FK'});
+Fotografia.hasMany(Animal,{ foreignKey: 'idFotografia_FK'});
 
 module.exports = Animal;

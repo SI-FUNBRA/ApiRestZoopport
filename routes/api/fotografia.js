@@ -1,53 +1,67 @@
 const router = require('express').Router();
+const Fotografia = require('../../database/models/Fotografia');
+const multer = require('multer');
 
-const Fotografia = require('../../database/models/fotografia');
-const Animal = require('../../database/models/animal');
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './public/uploads');
+    },
+    filename: function(req, file, cb){
+        cb(null, Date.now() + file.originalname)
+    }
+})
+const fileFilter = (req, file, cb) =>{
+    //reject a file
+    if(file.mimetype === 'image/jpg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpeg' )
+    cb(null, true)
+    else{
+        cb(null, false)
+    }
+}
 
-//consultar todos los tipoUsuario
+
+const upload = multer({ 
+    storage: storage,
+    fileFilter: fileFilter
+})
+
+//consultar todas las fotografias
 router.get('/', async (req, res) => {
-    
-    const Fotografia = await Fotografia.findAll({
-        include: {
-            model: Animal,
-            attributes: ['nombreAnimal']
-        },
-        attributes:['idFotografia','nombreFotografia']
-    });
-     res.json(Fotografia);
+    const fotografia = await Fotografia.findAll();
+    res.json(fotografia);
 });
-
 
 // CREATE 
-router.post('/', async (req, res) => {
-     
-   const Fotografia = await Fotografia.create(  {
-       Foto: req.body.Foto, 
-       descripcionFoto: req.body.descripcionFoto, 
-       idAnimal_FK: req.body.idAnimal_FK    
-   }).catch(err=>{
-        res.json({err:"error al ingresar una fotografia del animal",detallesError:err.errors[0]});
-    });
-   
-    res.status(201).json({success: "Fotografia Creada Con Exito"});
-});
-
+router.post('/upload', upload.single('file'), async (req, res) => {
+    console.log(req.file)
+    const fotografia = await Fotografia.create(  {
+        urlFotografia: `http://localhost:3005/${req.file.filename}`,
+        file: req.file
+    }).catch(err=>{
+         res.json({err:"error al subir una fotografia ",detallesError:err.errors[0]});
+     });
+    
+     res.status(201).json({success: "Fotografia subida exitosamente"});
+ });
+ 
 // UPDATE
-router.put('/actualizar/:idFoto', async(req, res) => {
-    const Fotografia = await Fotografia.update({
-        Foto: req.body.Foto,
-       descripcionFoto: req.body.descripcionFoto,
-        idAnimal_FK: req.body.idAnimal_FK
+router.put('/actualizar/:idFotografia', upload.single('file'), async(req, res) => {
+    const fotografia = await Fotografia.update({
+        urlFotografia: `http://localhost:3005/api/fotografia/upload/${req.file.filename}`,
+        file: req.file
     },{
-        where: { idFotografia: req.params.idFoto }
+        where: { idFotografia: req.params.idFotografia }
     });
     
-     res.json({success:"Fotografia Actualizada con exito"});
+     res.json({success:"Registro Actualizado con exito"});
 });
 
-router.delete('/:idFoto', async(req, res) => {
+//Delete
+router.delete('/:idFotografia', async(req, res) => {
     await Fotografia.destroy({
         where: { idFotografia: req.params.idFotografia}
     });
-     res.json({succes: 'Fotografia Eliminada con exito'});
+    res.status(200).json({message: 'Eliminado con exito'});
 });
+
 module.exports = router;

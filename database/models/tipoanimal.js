@@ -14,7 +14,7 @@ TipoAnimal.init({
         allowNull: false,
         unique: {
             args:true,
-            msg: "Este TipoAnimal ya fue registrado en nuestra base de datos"
+            msg: "Este Tipo de Animal ya fue registrado en nuestra base de datos"
         }
     }
 }, {

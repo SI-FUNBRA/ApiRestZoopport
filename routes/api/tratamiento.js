@@ -1,29 +1,35 @@
 const router = require('express').Router();
 
-const Tratamiento = require('../../database/models/tratamiento');
-const TipoTratamiento = require('../../database/models/TipoTratamiento');
+const Tratamiento = require('../../database/models/Tratamiento');
 
-//consultar todos los tipo Tratamiento
-router.get('/', async (req, res) => {
-    
-    const tratamiento = await Tratamiento.findAll({
-        include: {
-            model: TipoTratamiento,
-            attributes: ['nombreTipoTratamiento']
-        },
-        attributes:['idTratamiento','nombreTratamiento', 'detalleTratamiento', 'estado']
+//consultar todos las habilitados
+router.get('/', async(req, res) => {
+
+    const tratamientos = await Tratamiento.findAll(
+        {
+        where: { estado : true }
     });
-     res.json(tratamiento);
+    
+    res.json(tratamientos);
 });
 
+//consultar todos las deshabilitados
+router.get('/deshabilitados', async(req, res) => {
+
+    const tratamientos = await Tratamiento.findAll(
+        {
+        where: { estado : false }
+    });
+    
+    res.json(tratamientos);
+});
 
 // CREATE 
-router.post('/', async (req, res) => {
+router.post('/nuevo', async (req, res) => {
      
    const tratamiento = await Tratamiento.create(  {
-       nombreTratamiento: req.body.nombreTratamiento,
-       detalleTratamiento: req.body.detalleTratamiento, 
-       idTipoTratamiento_FK: req.body.idTipoTratamiento_FK    
+       nombreTratamiento: req.body.nombreTratamiento, 
+       estado: true
    }).catch(err=>{
         res.json({err:"error al crear un tratamiento",detallesError:err.errors[0]});
     });
@@ -34,9 +40,8 @@ router.post('/', async (req, res) => {
 // UPDATE
 router.put('/actualizar/:idTratamiento', async(req, res) => {
     const tratamiento = await Tratamiento.update({
-        nombreTratamiento: req.body.nombreTratamiento,
-       detalleTratamiento: req.body.detalleTratamiento, 
-       idTipoTratamiento_FK: req.body.idTipoTratamiento_FK    
+        nombreTratamiento: req.body.nombreTratamiento, 
+        estado: req.body.estado 
     },{
         where: { idTratamiento: req.params.idTratamiento }
     });
@@ -44,26 +49,35 @@ router.put('/actualizar/:idTratamiento', async(req, res) => {
      res.json({success:"Tratamiento Actualizado con exito"});
 });
 
-
-// INHABILITAR
-router.put('/inhabilitar/:idTratamiento', async(req, res) => {
-    const Tratamiento = await Tratamiento.update({
+// DESHABILITAR
+router.put('/deshabilitar/:idTratamiento', async(req, res) => {
+    const tratamiento = await Tratamiento.update({
         estado : false
     }, {
         where: { idTratamiento: req.params.idTratamiento }
     });
-     res.json({success: 'El Tratamiento a sido inactivado'});
+
+    res.status(201).json({message: 'Tratamiento deshabilitado'});
 });
 
-// HABILITAR
+// habilitar
 router.put('/habilitar/:idTratamiento', async(req, res) => {
-    const Tratamiento = await Tratamiento.update({
+    const tratamiento = await Tratamiento.update({
         estado : true
     }, {
         where: { idTratamiento: req.params.idTratamiento }
     });
 
-     res.json({success: 'El Tratamiento a sido activado'});
+    res.status(201).json({message: 'Tratamiento habilitado'});
+});
+
+
+//Delete
+router.delete('/:idTratamiento', async(req, res) => {
+    await Tratamiento.destroy({
+        where: { idTratamiento: req.params.idTratamiento}}
+    );
+    res.status(200).json({message: 'Eliminado con exito'});
 });
 
 module.exports = router;

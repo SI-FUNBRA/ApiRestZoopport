@@ -1,8 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
-const Animal = require('./animal');
-
 class Fotografia extends Model {}
 Fotografia.init({
     
@@ -11,12 +9,12 @@ Fotografia.init({
         primaryKey: true,
         autoIncrement: true 
     },
-    Foto: {
-        type: DataTypes.STRING(100),
+    urlFotografia: {
+        type: DataTypes.STRING(500),
         allowNull: false
     },
-    descripcionFoto:{
-        type: DataTypes.STRING(100),
+    file:{
+        type: DataTypes.BLOB,
         allowNull: false
     }
 }, {
@@ -25,10 +23,5 @@ Fotografia.init({
     timestamps: false,
     freezeTableName: true
 });
-
-Fotografia.belongsTo(Animal,{ foreignKey: 'idAnimal_FK'});
-Animal.hasMany(Fotografia,{ foreignKey: 'idAnimal_FK'});
-
-
 
 module.exports = Fotografia;
