@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     const cita = await Cita.findAll({
         include: {
             model: Sede,
-            attributes: ['idSede','nombreSede','telefonoSede','correoSede','nomenclatura']
+            attributes: ['telefonoSede','correoSede','nomenclatura']
         },
         attributes:['idCita','fechaCita','motivoCita']
     });

@@ -4,7 +4,11 @@ const ArticuloDonadoModel=require('../../database/models/ArticuloDonadoModel');
 
 
 router.get('/', async (req,res)=>{
-    const solicituddonacionespecieFINDALL= await SolicitudDonacionEspecieModel.findAll()
+    const solicituddonacionespecieFINDALL= await SolicitudDonacionEspecieModel.findAll({
+        include:{
+            model:ArticuloDonadoModel
+        }
+    })
     res.json(solicituddonacionespecieFINDALL);
 
 });
