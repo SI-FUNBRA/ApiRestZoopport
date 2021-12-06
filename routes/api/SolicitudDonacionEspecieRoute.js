@@ -20,7 +20,7 @@ router.post('/',async(req,res)=>{
     const solicituddonacionespecieCREATE = await SolicitudDonacionEspecieModel.create({
         fechaEntrega: req.body.fechaEntrega,
         lugarEntrega: req.body.lugarEntrega,
-        idUsuario_FK: req.idUsuario
+        idUsuario_FK: req.body.idUsuario
         }
     )
 
