@@ -11,7 +11,8 @@ router.get('/', async (req, res) => {
         include: {
             model: Pais,
             attributes: ['nombrePais']
-        }
+        },
+        attributes:['idSede','nombreSede','telefonoSede','correoSede','Nomenclatura']
     });
      res.json(sede);
 });
@@ -24,7 +25,8 @@ router.post('/', async (req, res) => {
        nombreSede: req.body.nombreSede,
        telefonoSede: req.body.telefonoSede, 
        correoSede: req.body.correoSede, 
-       Nomenclatura: req.body.Nomenclatura    
+       Nomenclatura: req.body.Nomenclatura,
+       idPais_FK: req.body.idPais_FK,    
    }).catch(err=>{
         res.json({err:"error al crear una nueva sede",detallesError:err.errors[0]});
    });
@@ -38,11 +40,11 @@ router.put('/actualizar/:idSede', async(req, res) => {
         nombreSede: req.body.nombreSede,
        telefonoSede: req.body.telefonoSede, 
        correoSede: req.body.correoSede, 
-       Nomenclatura: req.body.Nomenclatura
+       Nomenclatura: req.body.Nomenclatura,
+       idPais_FK: req.body.idPais_FK, 
     },{
         where: { idSede: req.params.idSede }
     });
-    
      res.json({success:"Sede Actualizada con exito"});
 });
 
