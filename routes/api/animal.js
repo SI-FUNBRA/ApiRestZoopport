@@ -1,9 +1,18 @@
 const router = require('express').Router();
+<<<<<<< HEAD
 const Animal = require('../../database/models/Animal');
 const TipoAnimal = require('../../database/models/TipoAnimal');
 const Enfermedad = require('../../database/models/Enfermedad');
 const Tratamiento = require('../../database/models/Tratamiento');
 const Fotografia = require('../../database/models/Fotografia');
+=======
+
+const Animal = require('../../database/models/animal');
+const Fotografia = require('../../database/models/fotografia')
+const EstadoAnimal = require('../../database/models/estadoAnimal');
+const Especie = require('../../database/models/especie');
+const { now } = require('moment');
+>>>>>>> origin/Api
 
 //consultar todos los Animales
 router.get('/', async(req, res) => {

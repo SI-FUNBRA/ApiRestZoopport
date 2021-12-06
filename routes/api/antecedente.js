@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const Antecedente = require('../../database/models/antecedente');
-const TipoAntecedente = require('../../database/models/TipoAntecedente');
+const TipoAntecedente = require('../../database/models/tipoAntecedente');
 
 //consultar todos los tipo Antecedente
 router.get('/', async (req, res) => {

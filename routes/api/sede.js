@@ -36,15 +36,14 @@ router.post('/', async (req, res) => {
 // UPDATE
 router.put('/actualizar/:idSede', async(req, res) => {
     const sede = await Sede.update({
-        nombreSede: req.body.nombreSede,
+    nombreSede: req.body.nombreSede,
        telefonoSede: req.body.telefonoSede, 
        correoSede: req.body.correoSede, 
-       Nomenclatura: req.body.Nomenclatura, 
+       Nomenclatura: req.body.Nomenclatura,
        idBarrio_FK: req.body.idBarrio_FK 
     },{
         where: { idSede: req.params.idSede }
     });
-    
      res.json({success:"Sede Actualizada con exito"});
 });
 

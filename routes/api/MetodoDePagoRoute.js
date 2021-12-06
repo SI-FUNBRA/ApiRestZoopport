@@ -1,6 +1,5 @@
 const router=require('express').Router();
-const DonacionEconomicaModel = require('../../database/Models/DonacionEconomicaModel');
-const MetodoDePagoModel=require('../../database/Models/MetodoDePagoModel');
+const MetodoDePagoModel=require('../../database/models/MetodoDePagoModel');
 
 //Rutas
 //Metodo para Metodo de pago /api/MotodoDePago

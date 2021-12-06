@@ -1,6 +1,11 @@
 const router = require('express').Router();
 
+<<<<<<< HEAD
 const Tratamiento = require('../../database/models/Tratamiento');
+=======
+const Tratamiento = require('../../database/models/tratamiento');
+const TipoTratamiento = require('../../database/models/tipoTratamiento');
+>>>>>>> origin/Api
 
 //consultar todos las habilitados
 router.get('/', async(req, res) => {

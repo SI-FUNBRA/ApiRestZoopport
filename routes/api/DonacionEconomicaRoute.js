@@ -1,5 +1,5 @@
 const router=require('express').Router();
-const DonacionEconomicaModel=require('../../database/Models/DonacionEconomicaModel');
+const DonacionEconomicaModel=require('../../database/models/DonacionEconomicaModel');
 const MetodoDePago = require('../../database/models/MetodoDePagoModel');
 const Usuarios = require('../../database/models/usuario');
 

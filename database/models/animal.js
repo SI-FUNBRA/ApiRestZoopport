@@ -1,10 +1,15 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
+<<<<<<< HEAD
 const TipoAnimal = require('./TipoAnimal');
 const Enfermedad = require('./Enfermedad');
 const Tratamiento = require('./Tratamiento');
 const Fotografia = require('./Fotografia');
+=======
+const EstadoAnimal = require('./estadoAnimal');
+const Especie = require('./especie');
+>>>>>>> origin/Api
 
 class Animal extends Model {}
 Animal.init({

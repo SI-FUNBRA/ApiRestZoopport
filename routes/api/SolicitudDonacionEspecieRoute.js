@@ -1,10 +1,18 @@
 const router=require('express').Router();
 const SolicitudDonacionEspecieModel=require('../../database/models/SolicitudDonacionEspecieModel');
 const ArticuloDonadoModel=require('../../database/models/ArticuloDonadoModel');
+const Usuarios = require('../../database/models/usuario');
 
 
 router.get('/', async (req,res)=>{
-    const solicituddonacionespecieFINDALL= await SolicitudDonacionEspecieModel.findAll()
+    const solicituddonacionespecieFINDALL= await SolicitudDonacionEspecieModel.findAll({
+        include:[{
+            model:ArticuloDonadoModel
+        },{
+            model:Usuarios,
+            attributes:['nombreUsuario', 'apellidoUsuario']
+        }]
+    })
     res.json(solicituddonacionespecieFINDALL);
 
 });
@@ -16,7 +24,7 @@ router.post('/',async(req,res)=>{
     const solicituddonacionespecieCREATE = await SolicitudDonacionEspecieModel.create({
         fechaEntrega: req.body.fechaEntrega,
         lugarEntrega: req.body.lugarEntrega,
-        idUsuario_FK: req.idUsuario
+        idUsuario_FK: req.body.idUsuario
         }
     )
 
