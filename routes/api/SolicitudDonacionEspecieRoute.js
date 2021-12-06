@@ -1,13 +1,17 @@
 const router=require('express').Router();
 const SolicitudDonacionEspecieModel=require('../../database/models/SolicitudDonacionEspecieModel');
 const ArticuloDonadoModel=require('../../database/models/ArticuloDonadoModel');
+const Usuarios = require('../../database/models/usuario');
 
 
 router.get('/', async (req,res)=>{
     const solicituddonacionespecieFINDALL= await SolicitudDonacionEspecieModel.findAll({
-        include:{
+        include:[{
             model:ArticuloDonadoModel
-        }
+        },{
+            model:Usuarios,
+            attributes:['nombreUsuario', 'apellidoUsuario']
+        }]
     })
     res.json(solicituddonacionespecieFINDALL);
 
